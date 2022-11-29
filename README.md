@@ -3,6 +3,7 @@
 Flora explorer is a PWA designed for flora data collection.
 
 ## Installation
+First complete environmet variables in a .env 
 
 ```sh
 pnpm i
