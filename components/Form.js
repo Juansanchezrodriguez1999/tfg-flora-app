@@ -15,7 +15,7 @@ import "@uppy/dashboard/dist/style.css";
 import { Functions } from "./form-components/Functions";
 import FormIndex from "./FormIndex";
 
-export default function Form({ sample, isLocal }) {
+export default function Form({ sample, isLocal, refresh}) {
   const router = useRouter();
   const { data: session, status } = useSession();
   const {
@@ -50,6 +50,9 @@ export default function Form({ sample, isLocal }) {
   const [communityAuthorClick, setCommunityAuthorClick] = useState(false);
   const [localRegisNumbers, setLocalRegisNumbers] = useState([]);
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
+  const [currentDateTime, setCurrentDateTime] = useState([]);
+  const [lastDateTime, setLastDateTime] = useState([]);
+  
   const uppy = useUppy(() => {
     return new Uppy({
       autoProceed: false,
@@ -58,14 +61,16 @@ export default function Form({ sample, isLocal }) {
       },
     });
   });
-  console.log(usernames)
-  console.log(session)
-  console.log(DocumentTimeline)
+
+  //console.log(lastDateTime)
+  //console.log(currentDateTime)
   useEffect(() => {
+    //setRefresh(Functions.refreshLocalDataBase());
+    Functions.getAuthors(setStaticAuthors,setUsernames,refresh);
     setIsGeolocationAvailable("geolocation" in navigator);
-    Functions.getAuthors(setStaticAuthors,setUsernames);
-    Functions.getAllSpecies(setAllSpecies);
-    Functions.getLocalRegisNumbers(setLocalRegisNumbers,isLocal,sample);
+    //Functions.refreshLocalDataBase();
+    Functions.getAllSpecies(setAllSpecies, refresh);
+    Functions.getLocalRegisNumbers(setLocalRegisNumbers,isLocal);
     Functions.getRemoteRegisNumbers(setRemoteRegisNumbers);
     if (sample) {
       setValue("no_register", sample._id);
@@ -116,7 +121,8 @@ export default function Form({ sample, isLocal }) {
         sample.Pictures.map((img) => uppy.addFile(img));
       }
     }
-  }, []);
+  }, [refresh]);
+
   const submitForm = (data) => {
     uppy
       .upload()

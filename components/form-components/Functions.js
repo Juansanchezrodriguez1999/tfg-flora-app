@@ -2,6 +2,7 @@ import Mgrs, {LatLon} from "geodesy/mgrs.js";
 import { FloraSamples } from "../../lib/FloraSamples";
 import { FloraAuthors } from "../../lib/FloraAuthors";
 import { FloraSpecies } from "../../lib/FloraSpecies";
+import { Time } from "../../lib/Time";
 
 const Functions = {
   //No Register and useEffect
@@ -9,14 +10,13 @@ const Functions = {
     const remoteRNs = await FloraSamples.getAllRemoteRegisNumber();
     setRemoteRegisNumbers(remoteRNs);
   },
-  getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal,sample) => {
+  getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal) => {
     if (!isLocal) {
         const localRNs = await FloraSamples.getAllLocalRegisNumber();
         setLocalRegisNumbers(localRNs);
     } else {
         const localRNs = await FloraSamples.getAllLocalRegisNumber()
-        const localRNs_Filtered = localRNs.filter(item => item != sample._id)
-      setLocalRegisNumbers(localRNs_Filtered);
+        setLocalRegisNumbers(localRNs);
     }
   },
   //Author
@@ -149,14 +149,112 @@ const Functions = {
     setSpecies(items);
   },
   //useEffect
-  getAllSpecies: async (setAllSpecies) => {
-    const registered_species = await FloraSpecies.getSpecies();
+  getAllSpecies: async (setAllSpecies, refresh) => {
+    const registered_species = await FloraSpecies.getSpecies(refresh);
     setAllSpecies(registered_species);
   },
-  getAuthors: async (setStaticAuthors,setUsernames) => {
-    const registered_authors = await FloraAuthors.getUsers();
+  getAuthors: async (setStaticAuthors,setUsernames,refresh) => {
+    const registered_authors = await FloraAuthors.getUsers(refresh);
     setStaticAuthors(registered_authors);
     setUsernames(registered_authors.map((d) => d.username));
   },
+
+  getRefreshLocalDatabase: async () => {
+
+    const allTimesArray = await Time.getAllTime();
+    console.log(allTimesArray)
+    console.log("timenuevo")
+    console.log(allTimesArray[(allTimesArray.length)-1])
+    if (allTimesArray.length>1){
+      console.log("timeviejo")
+      console.log(allTimesArray[(allTimesArray.length)-2])
+      if (allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2]>10){
+        console.log(console.log(allTimesArray[(allTimesArray.length)-1],"-",allTimesArray[(allTimesArray.length)-2])," = ",allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2])
+        Time.removeTime(allTimesArray[(allTimesArray.length)-2]);
+        var update = "YES"
+      }
+      else{
+        console.log(console.log(allTimesArray[(allTimesArray.length)-1],"-",allTimesArray[(allTimesArray.length)-2])," = ",allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2])
+        Time.removeTime(allTimesArray[(allTimesArray.length)-1]);
+        var update = "NO"
+      }
+    }
+    else{
+      var update = "YES"
+    }
+    Time.insertTime();
+    return update;
+  }
+        /*if(allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2]>10){
+          Time.removeTime(allTimesArray[(allTimesArray.length)-2]);
+          
+        }
+        const lastTime = allTimesArray[(allTimesArray.length)-2]
+        const currentTime = allTimesArray[(allTimesArray.length)-1]
+        setCurrentDateTime(currentTime);
+        setLastDateTime(lastTime)
+        console.log(allTimesArray)
+      
+      else{
+        Time.insertTime();
+        console.log("primer time")
+      }
+  }
+
+  getCurrentDate(setCurrentDate,currentDate){
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    let hour = newDate.getHours();
+    let minutes = newDate.getMinutes();
+    let seconds = newDate.getSeconds();
+    console.log(currentDate)
+    var dateTime = (new Date(`${year}/${month<10?`0${month}`:`${month}`}/${date} ${hour}:${minutes<10?`0${minutes}`:`${minutes}`}:${seconds<10?`0${seconds}`:`${seconds}`}` ))/60000;
+    setCurrentDate(dateTime)
+    console.log(currentDate)
+    if(currentDate="undefined"){
+      setCurrentDate(dateTime)
+      console.log("primer datetime")
+    }
+    else if (dateTime-currentDate>10){
+      console.log("hay que refrescar")
+    }
+    else{
+      console.log("no refresco")
+    }
+    },
+
+    loadFiles(currentDate,setCurrentDate,setLoadFiles){
+      let newDate = new Date()
+      let date = newDate.getDate();
+      let month = newDate.getMonth() + 1;
+      let year = newDate.getFullYear();
+      let hour = newDate.getHours();
+      let minutes = newDate.getMinutes();
+      let seconds = newDate.getSeconds();
+      var dateTimeNew = (new Date(`${year}/${month<10?`0${month}`:`${month}`}/${date} ${hour}:${minutes<10?`0${minutes}`:`${minutes}`}:${seconds<10?`0${seconds}`:`${seconds}`}` ))/60000;
+      if (dateTimeNew-currentDate>10){
+        setLoadFiles("Y");
+      }
+      else {
+        setLoadFiles("N")
+      }
+      setCurrentDate(dateTime)
+      },
+
+
+    getCurfffrentDate(currentDate,setCurrentDate){
+      let newDate = new Date()
+      let date = newDate.getDate();
+      let month = newDate.getMonth() + 1;
+      let year = newDate.getFullYear();
+      let hour = newDate.getHours();
+      let minutes = newDate.getMinutes();
+      let seconds = newDate.getSeconds();
+      var x = (new Date(`${year}/${month<10?`0${month}`:`${month}`}/${date} ${hour}:${minutes<10?`0${minutes}`:`${minutes}`}:${seconds<10?`0${seconds}`:`${seconds}`}` ))/60000;
+      var y = (new Date('2022/11/29 13:10:00'))/60000;
+      setCurrentDate([x-y])
+    }*/
 }
 export {Functions};
