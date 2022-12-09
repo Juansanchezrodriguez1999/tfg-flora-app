@@ -38,11 +38,16 @@ const Functions = {
   },
   //Natural Park
   getSpecies: async (np,allSpecies,setNaturalParkSpecies ) => {
-    if (allSpecies.map((d) => d.Natural_Park).includes(np)) {
-      const np_doc = allSpecies.find((d) => d.Natural_Park === np);
-      const np_species = np_doc.Species.map((s) => s.Taxon);
-      setNaturalParkSpecies(np_species);
+    if (allSpecies.map((d) => d._id).includes(np)) {
+      const np_doc = allSpecies.find((d) => d._id === np);
+      console.log("adios")
+      console.log(np_doc)
+      const np_species = np_doc.Species.map((s) => s);
+      const unique_np_species = [...new Set(np_species)];
+      setNaturalParkSpecies(unique_np_species);
+      console.log(unique_np_species)
     } else {
+      console.log("hola")
       setNaturalParkSpecies([]);
     }
   },

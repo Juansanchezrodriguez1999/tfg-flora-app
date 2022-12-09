@@ -5,7 +5,7 @@ const client = new MongoClient(process.env.MONGO_URI);
 const connect = async () => {
   await client.connect();
   const database = client.db("enbic2lab");
-  const collection = database.collection("flora_species");
+  const collection = database.collection("test_species");
   return collection;
 };
 
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         collection
           .find(
             {},
-            { projection: { _id: 0, Natural_Park: 1, "Species.Taxon": 1 } }
+            { projection: { _id: 1,Species:1 } }
           )
           .toArray()
       );

@@ -52,7 +52,6 @@ export default function Form({ sample, isLocal, refresh}) {
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState([]);
   const [lastDateTime, setLastDateTime] = useState([]);
-  
   const uppy = useUppy(() => {
     return new Uppy({
       autoProceed: false,
@@ -371,7 +370,7 @@ export default function Form({ sample, isLocal, refresh}) {
           />
           <datalist id="np_list">
             {allSpecies.map((np_doc, index) => (
-              <option key={index}>{np_doc.Natural_Park}</option>
+              <option key={index}>{np_doc._id}</option>
             ))}
           </datalist>
         </div>
