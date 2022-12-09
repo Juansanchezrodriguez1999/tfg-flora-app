@@ -52,7 +52,6 @@ export default function Form({ sample, isLocal, refresh}) {
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState([]);
   const [lastDateTime, setLastDateTime] = useState([]);
-  
   const uppy = useUppy(() => {
     return new Uppy({
       autoProceed: false,
@@ -70,7 +69,7 @@ export default function Form({ sample, isLocal, refresh}) {
     setIsGeolocationAvailable("geolocation" in navigator);
     //Functions.refreshLocalDataBase();
     Functions.getAllSpecies(setAllSpecies, refresh);
-    Functions.getLocalRegisNumbers(setLocalRegisNumbers,isLocal);
+    Functions.getLocalRegisNumbers(setLocalRegisNumbers,isLocal,sample);
     Functions.getRemoteRegisNumbers(setRemoteRegisNumbers);
     if (sample) {
       setValue("no_register", sample._id);

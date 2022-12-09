@@ -6,7 +6,7 @@ export default function CustomHeader() {
 
   return (
     <div className="flex justify-between border-b-2 shadow items-center p-2 w-full">
-      <img className="w-12" src = "/services/flora/app/logo.svg" alt="Logo"/>
+      <img className="w-12" src = "/services/flora/app/logo.png" alt="Logo"/>
       <label  className="flex items-center justify-between space-x-2 text-green-500 text-lg font-bold px-20 center"> 
                   FLORA APP
      </label>

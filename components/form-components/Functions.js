@@ -12,13 +12,28 @@ const Functions = {
     setRemoteRegisNumbers(remoteRNs);
     }
   },
-  getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal) => {
+  getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal,sample) => {
+    console.log(sample)
     if (!isLocal) {
-        const localRNs = await FloraSamples.getAllLocalRegisNumber();
+      const localRNs = await FloraSamples.getAllLocalRegisNumber();
+      if(sample!=undefined){
+        const RNsFilt = localRNs.filter(rns=>rns!=sample._id);
+        setLocalRegisNumbers(RNsFilt);
+        console.log("estamos en edit hay sample")
+      }else{
         setLocalRegisNumbers(localRNs);
+        console.log("no hay sample")
+      }
     } else {
-        const localRNs = await FloraSamples.getAllLocalRegisNumber()
-        setLocalRegisNumbers(localRNs);
+        const localRNs = await FloraSamples.getAllLocalRegisNumber();
+        if(sample!=undefined){
+          const RNsFilt = localRNs.filter(rns=>rns!=sample._id);
+          setLocalRegisNumbers(RNsFilt);
+          console.log("estamos en edit hay sample")
+        }else{
+          setLocalRegisNumbers(localRNs);
+          console.log("no hay sample")
+        }
     }
   },
   //Author
