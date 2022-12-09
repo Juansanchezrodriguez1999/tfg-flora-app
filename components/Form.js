@@ -52,6 +52,7 @@ export default function Form({ sample, isLocal, refresh}) {
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState([]);
   const [lastDateTime, setLastDateTime] = useState([]);
+  
   const uppy = useUppy(() => {
     return new Uppy({
       autoProceed: false,

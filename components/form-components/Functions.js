@@ -7,8 +7,10 @@ import { Time } from "../../lib/Time";
 const Functions = {
   //No Register and useEffect
   getRemoteRegisNumbers: async (setRemoteRegisNumbers) => {
-    const remoteRNs = await FloraSamples.getAllRemoteRegisNumber();
+    if (navigator.onLine){
+      const remoteRNs = await FloraSamples.getAllRemoteRegisNumber();
     setRemoteRegisNumbers(remoteRNs);
+    }
   },
   getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal) => {
     if (!isLocal) {
