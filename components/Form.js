@@ -153,13 +153,13 @@ export default function Form({ sample, isLocal, refresh}) {
         const dataObject = {
           id: id,
           _id:data.no_register,
-          Date: date,
+          created_at: date,
           Authors: authors,
           Group: data.group,
           Project: data.project,
           Location: data.location,
           Natural_Park: data.natural_park,
-          UTM: final_utm,
+          UTM: final_utm.replace(/\s+/g, '') ,
           Latitude: final_latlon[0],
           Longitude: final_latlon[1],
           Lithology: data.lithology,
@@ -263,7 +263,6 @@ export default function Form({ sample, isLocal, refresh}) {
             </p>
           )}
         </div>
-        <FormIndex errors={errors} field="Group"/>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="project" >
             Project <span className="text-red-700">*</span>

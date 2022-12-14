@@ -36,7 +36,7 @@ export async function getServerSideProps(ctx) {
   const { id } = ctx.query;
   const sample = await FloraSamplesHandler.getOne(id);
   sample._id = sample._id.toString();
-  sample.Date = sample.Date.toString();
+  sample.created_at = sample.created_at.toString();
 
   const session = await getSession(ctx);
   if (!sample || !sample.Authors.includes(session.user.username)) {

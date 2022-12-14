@@ -36,7 +36,7 @@ export default function Samples() {
 
   const preprocessSamples = (docs) => {
     const res = docs.map((doc) => {
-      const date = new Date(doc.Date);
+      const date = new Date(doc.created_at);
       const strDate = date.toLocaleString([], {
         dateStyle: "short",
         timeStyle: "short",
