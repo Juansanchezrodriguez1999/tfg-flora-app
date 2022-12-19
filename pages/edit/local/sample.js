@@ -14,7 +14,7 @@ const EditLocal = () => {
 
   useEffect(async () => {
     const doc = await FloraSamples.getLocalSample(id);
-    doc.Date = doc.Date.toString();
+    doc.created_at = doc.created_at.toString();
     setSample(doc);
   }, []);
 

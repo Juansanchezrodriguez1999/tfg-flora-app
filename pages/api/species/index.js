@@ -5,7 +5,7 @@ const client = new MongoClient(process.env.MONGO_URI);
 const connect = async () => {
   await client.connect();
   const database = client.db("enbic2lab");
-  const collection = database.collection("test_species");
+  const collection = database.collection("natural_park_species");
   return collection;
 };
 

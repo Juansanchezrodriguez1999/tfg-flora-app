@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const bucketName = process.env.MINIO_BUCKET;
     const session = await getSession({ req });
     const username = session.user.username;
-    const objectName = username + "/flora/" + noReg + "/pictures/" + filename;
+    const objectName = username + "/flora/undefined/pictures/" + filename;
 
     if (req.method === "GET") {
       /* GET ONE */

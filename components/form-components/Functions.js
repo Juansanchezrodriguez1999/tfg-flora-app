@@ -173,6 +173,7 @@ const Functions = {
   //useEffect
   getAllSpecies: async (setAllSpecies, refresh) => {
     const registered_species = await FloraSpecies.getSpecies(refresh);
+    console.log(registered_species)
     setAllSpecies(registered_species);
   },
   getAuthors: async (setStaticAuthors,setUsernames,refresh) => {

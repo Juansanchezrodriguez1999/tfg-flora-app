@@ -22,7 +22,9 @@ export default function Details({ sample, isLocal }) {
         setPictures(urls)
       );
     } else {
+      console.log(sample.Pictures)
       var urls = sample.Pictures.map((img) => URL.createObjectURL(img.data));
+      console.log(urls)
       setPictures(urls);
     }
   }, []);

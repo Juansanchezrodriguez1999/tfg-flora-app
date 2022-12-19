@@ -56,7 +56,7 @@ export default function Form({ sample, isLocal, refresh}) {
     return new Uppy({
       autoProceed: false,
       restrictions: {
-        allowedFileTypes: ["image/*"],
+        allowedFileTypes: ['image/*', '.jpg', '.jpeg', '.png', '.gif'],
       },
     });
   });
@@ -72,14 +72,16 @@ export default function Form({ sample, isLocal, refresh}) {
     Functions.getLocalRegisNumbers(setLocalRegisNumbers,isLocal,sample);
     Functions.getRemoteRegisNumbers(setRemoteRegisNumbers);
     if (sample) {
+      let UTM_split=sample.UTM.split("")
+      UTM_split=UTM_split[0]+UTM_split[1]+UTM_split[2]+" "+UTM_split[3]+UTM_split[4]+" "+UTM_split[5]+UTM_split[6]+" "+UTM_split[7]+UTM_split[8]
       setValue("no_register", sample._id);
       setAuthors(sample.Authors);
       setValue("group", sample.Group);
       setValue("project", sample.Project);
       setValue("location", sample.Location);
       setValue("natural_park", sample.Natural_Park);
-      setUTM(sample.UTM);
-      setValue("utm", sample.UTM);
+      setUTM(UTM_split);
+      setValue("utm", UTM_split);
       setValue("lithology", sample.Lithology);
       setValue("coverage", sample.Coverage);
       setValue("altitude", sample.Altitude);
@@ -97,6 +99,8 @@ export default function Form({ sample, isLocal, refresh}) {
       setValue("subcommunity_year", sample.Subcommunity_Year);
       setSubcommunityAuthors(sample.Subcommunity_Authors);
       setSpecies(sample.Species);
+      console.log("islocal")
+      console.log(isLocal)
       if (!isLocal) {
         FloraSamples.getPictures(sample.Pictures).then((urls) => {
           urls.map((url, index) => {
@@ -126,7 +130,7 @@ export default function Form({ sample, isLocal, refresh}) {
     uppy
       .upload()
       .then(async (files) => {
-        const date = sample ? new Date(sample.Date) : new Date();
+        const date = sample ? new Date(sample.created_at) : new Date();
         const final_utm =
           mode === "utm"
             ? utm

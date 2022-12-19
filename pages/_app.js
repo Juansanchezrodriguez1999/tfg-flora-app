@@ -7,7 +7,7 @@ export default function MyApp({
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} basePath="/services/flora/app/api/auth">
       <Component {...pageProps} />
     </SessionProvider>
   );
