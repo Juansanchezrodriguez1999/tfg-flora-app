@@ -56,7 +56,7 @@ export default function Form({ sample, isLocal, refresh}) {
     return new Uppy({
       autoProceed: false,
       restrictions: {
-        allowedFileTypes: ['image/*', '.jpg', '.jpeg', '.png', '.gif'],
+        allowedFileTypes: ["image/*"],
       },
     });
   });
@@ -100,7 +100,6 @@ export default function Form({ sample, isLocal, refresh}) {
       setSubcommunityAuthors(sample.Subcommunity_Authors);
       setSpecies(sample.Species);
       console.log("islocal")
-      console.log(isLocal)
       if (!isLocal) {
         FloraSamples.getPictures(sample.Pictures).then((urls) => {
           urls.map((url, index) => {
@@ -363,20 +362,22 @@ export default function Form({ sample, isLocal, refresh}) {
             </p>
           )}
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="natural_park" >
             Natural park
           </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" type="text" list="np_list"
+          <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" defaultValue=""
             {...register("natural_park")}
             onChange={(e) => Functions.getSpecies(e.target.value,allSpecies,setNaturalParkSpecies)}
-          />
-          <datalist id="np_list">
+          >
+            <option value="" disabled hidden />
             {allSpecies.map((np_doc, index) => (
               <option key={index}>{np_doc._id}</option>
             ))}
-          </datalist>
+          </select>
         </div>
+
         <div className="mb-4">
           <label className="block text-green-500 text-lg font-bold mb-4">
             Georeferencing
