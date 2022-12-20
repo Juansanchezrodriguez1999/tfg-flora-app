@@ -100,6 +100,7 @@ export default function Samples() {
           }
           return (
             <div className="flex gap-2">
+
               <Link href={viewDir}>
                 <a className="inline-block bg-blue-200 transition-colors ease-in-out hover:bg-blue-400 font-medium px-2 py-0.5 rounded-full">
                   <svg
@@ -275,7 +276,7 @@ export default function Samples() {
     return (
       <div className="mx-auto grid place-items-center">
         <Header />
-        <div className="max-w-4xl mt-4 mb-4 bg-white shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto">
+        <div className="max-w-4xl mt-4 mb-4 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
           <div className="grid place-items-center mb-6">
             {routerQuery?.success === "true" &&
               setBoxMessage(
@@ -361,14 +362,24 @@ export default function Samples() {
                 "Warning",
                 `You have ${numLocalDocs} samples pending to be synchronized.`
               )}
-            <Link href="/form">
-              <a className="bg-green-200 transition-colors ease-in-out hover:bg-green-400 py-2 px-2 rounded">
-                <div className="flex items-center justify-center space-x-2">
-                  <GrAddCircle />
-                  <span>Add sample</span>
-                </div>
-              </a>
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/form">
+                <a className="bg-green-200 transition-colors ease-in-out hover:bg-green-400 py-2 px-2 rounded">
+                  <div className="flex items-center justify-center space-x-2">
+                    <GrAddCircle />
+                    <span>Add sample</span>
+                  </div>
+                </a>
+              </Link>
+              <Link href="/form_np">
+                <a className="bg-pink-200 transition-colors ease-in-out hover:bg-pink-400 py-2 px-2 rounded">
+                  <div className="flex items-center justify-center space-x-2">
+                    <GrAddCircle />
+                    <span>Add Natural Park</span>
+                  </div>
+                </a>
+              </Link>
+            </div>
           </div>
           {localSamples.length > 0 && (
             <div>
@@ -414,6 +425,7 @@ export default function Samples() {
         </div>
         <Footer />
       </div>
+      
     );
   } else if (status === "loading") {
     return null;

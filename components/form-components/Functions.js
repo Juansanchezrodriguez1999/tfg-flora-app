@@ -53,6 +53,12 @@ const Functions = {
 
     setAuthors(items);
   },
+  getNaturalPark: async(refresh, setAllNaturalParks)=>{
+    const registered_species = await FloraSpecies.getSpecies(refresh);
+    const allNaturalParks = registered_species.map((doc) => doc._id)
+    console.log(allNaturalParks)
+    setAllNaturalParks(allNaturalParks)
+  },
   //Natural Park
   getSpecies: async (np,allSpecies,setNaturalParkSpecies ) => {
     if (allSpecies.map((d) => d._id).includes(np)) {
@@ -172,6 +178,7 @@ const Functions = {
   },
   //useEffect
   getAllSpecies: async (setAllSpecies, refresh) => {
+    console.log(refresh)
     const registered_species = await FloraSpecies.getSpecies(refresh);
     console.log(registered_species)
     setAllSpecies(registered_species);
@@ -188,7 +195,7 @@ const Functions = {
     console.log(allTimesArray)
     console.log("timenuevo")
     console.log(allTimesArray[(allTimesArray.length)-1])
-    if (allTimesArray.length>1){
+    if (allTimesArray.length>=1){
       console.log("timeviejo")
       console.log(allTimesArray[(allTimesArray.length)-2])
       if (allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2]>10){
@@ -206,6 +213,8 @@ const Functions = {
       var update = "YES"
     }
     Time.insertTime();
+    const TIMENEW = await Time.getAllTime();
+    console.log(TIMENEW)
     return update;
   }
         /*if(allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2]>10){

@@ -6,10 +6,13 @@ export default function CustomHeader() {
 
   return (
     <div className="flex justify-between border-b-2 shadow items-center p-2 w-full">
-      <img className="w-12" src = "/services/flora/app/logo.png" alt="Logo"/>
-      <label  className="flex items-center justify-between space-x-2 text-green-500 text-lg font-bold px-20 center"> 
-                  FLORA APP
-     </label>
+
+      <div>
+        {status==="authenticated" &&(
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        )}
+      </div>
+      <img className="flex items-center justify-between center" src = "/services/flora/app/logo.png" style={{ width: 200, height: 75.84 }} alt="Logo"/>
       <div className="flex items-center space-x-4">
         {status==="authenticated" &&(
           <>
