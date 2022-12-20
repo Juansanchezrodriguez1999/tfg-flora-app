@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FloraSamples } from "/lib/FloraSamples";
 import { GrAddCircle } from "react-icons/gr";
+import { Time } from "../lib/Time";
 
 export default function Samples() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function Samples() {
   const [offlineMessage, setOfflineMessage] = useState(false);
   const [numLocalDocs, setNumLocalDocs] = useState();
   const [routerQuery, setRouterQuery] = useState();
+  const [lastRefresh, setLastRefresh] = useState();
 
   const updateState = () => {
     setRouterQuery();
@@ -196,7 +198,21 @@ export default function Samples() {
     );
   };
 
+  useEffect(async() => {
+    const prueba = await Time.getAllTime();
+    console.log(prueba[0].strDate);
+    setLastRefresh(prueba[0].strDate.toString())
+  }, []);
+
+
   useEffect(() => {
+    //console.log(hola)
+    //console.log(typeof(hola))
+    /*const arrayLastTimeRefresh = hola2.map((doc) => doc.strDate)
+    console.log(arrayLastTimeRefresh)
+    setLastRefresh(arrayLastTimeRefresh[0]);
+    console.log(lastRefresh);*/
+
     if (!navigator.onLine) {
       setOfflineMessage(true);
     }
@@ -422,6 +438,9 @@ export default function Samples() {
               <Table columns={columns} data={preprocessSamples(samples)} />
             </div>
           )}
+        </div>
+        <div className="block text-black-500 text-lg font-bold mb-4 mt-4">
+          Last date sync local database: {lastRefresh}
         </div>
         <Footer />
       </div>

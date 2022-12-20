@@ -12,14 +12,22 @@ export default function FormPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [refresh, setRefresh] = useState();
+  const [lastRefresh, setLastRefresh] = useState();
 
   useEffect(async () => {
     let hola=null;
     await Functions.getRefreshLocalDatabase().then(valor=>{
       hola=valor
     });
+    /*let hola2=null
+    await Time.getAllTime().then(valor=>{
+      hola2=valor
+    })*/
     //console.log(hola)
     //console.log(typeof(hola))
+    //const arrayLastTimeRefresh = hola2.map((doc) => doc.strDate)
+    //console.log(arrayLastTimeRefresh)
+    //setLastRefresh(arrayLastTimeRefresh[0]);
     setRefresh(hola.toString())
   }, []);
 
@@ -28,7 +36,7 @@ export default function FormPage() {
     return (
       <div className="mx-auto grid place-items-center">
         <Header />
-        <Form refresh={refresh}/>
+        <Form refresh={refresh} lastRefresh={lastRefresh}/>
         <Footer />
       </div>
     );

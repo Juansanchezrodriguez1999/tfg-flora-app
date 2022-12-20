@@ -190,31 +190,34 @@ const Functions = {
   },
 
   getRefreshLocalDatabase: async () => {
-
+    Time.insertTime();
     const allTimesArray = await Time.getAllTime();
     console.log(allTimesArray)
-    console.log("timenuevo")
-    console.log(allTimesArray[(allTimesArray.length)-1])
-    if (allTimesArray.length>=1){
+    const timesCompare = allTimesArray.map((doc) => doc.id)
+    console.log("todoslostiempos");
+    console.log(timesCompare);
+    console.log("timenuevo");
+    console.log(timesCompare[(timesCompare.length)-1])
+    if (timesCompare.length>1){
       console.log("timeviejo")
-      console.log(allTimesArray[(allTimesArray.length)-2])
-      if (allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2]>10){
-        console.log(console.log(allTimesArray[(allTimesArray.length)-1],"-",allTimesArray[(allTimesArray.length)-2])," = ",allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2])
-        Time.removeTime(allTimesArray[(allTimesArray.length)-2]);
+      console.log(timesCompare[(timesCompare.length)-2])
+      if (timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2]>10){
+        console.log(console.log(timesCompare[(timesCompare.length)-1],"-",timesCompare[(timesCompare.length)-2])," = ",timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2])
+        console.log("tiempo a borrar")
+        Time.removeTime(timesCompare[(timesCompare.length)-2]);
+        console.log("tiempo a borrar")
         var update = "YES"
       }
       else{
-        console.log(console.log(allTimesArray[(allTimesArray.length)-1],"-",allTimesArray[(allTimesArray.length)-2])," = ",allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2])
-        Time.removeTime(allTimesArray[(allTimesArray.length)-1]);
+        console.log(console.log(timesCompare[(timesCompare.length)-1],"-",timesCompare[(timesCompare.length)-2])," = ",timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2])
+        console.log("tiempo a borrar")
+        Time.removeTime(timesCompare[(timesCompare.length)-1]);
         var update = "NO"
       }
     }
     else{
       var update = "YES"
     }
-    Time.insertTime();
-    const TIMENEW = await Time.getAllTime();
-    console.log(TIMENEW)
     return update;
   }
         /*if(allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2]>10){
