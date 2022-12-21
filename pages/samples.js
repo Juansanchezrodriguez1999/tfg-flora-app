@@ -200,8 +200,14 @@ export default function Samples() {
 
   useEffect(async() => {
     const prueba = await Time.getAllTime();
-    console.log(prueba[0].strDate);
-    setLastRefresh(prueba[0].strDate.toString())
+    if(prueba.length>0){
+      console.log(prueba)
+      setLastRefresh(prueba[0].strDate.toString())
+    }
+    else{
+      setLastRefresh("undefined")
+    }
+    
   }, []);
 
 
@@ -294,6 +300,17 @@ export default function Samples() {
         <Header />
         <div className="max-w-4xl mt-4 mb-4 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
           <div className="grid place-items-center mb-6">
+          {lastRefresh !== "undefined" && (
+            <div className="text-gray-700 text-sm font-medium bg-purple-200 rounded-lg p-4 mb-4">
+              Local database update: &nbsp;  
+              {lastRefresh}
+            </div>
+          )}
+          {lastRefresh == "undefined" && (
+            <div className="text-gray-700 text-sm font-medium bg-purple-200 rounded-lg p-4 mb-4">
+              The local database has never been updated
+            </div>
+          )}
             {routerQuery?.success === "true" &&
               setBoxMessage(
                 "Success",
@@ -439,9 +456,7 @@ export default function Samples() {
             </div>
           )}
         </div>
-        <div className="block text-black-500 text-lg font-bold mb-4 mt-4">
-          Last date sync local database: {lastRefresh}
-        </div>
+        
         <Footer />
       </div>
       

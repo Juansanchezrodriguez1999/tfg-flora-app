@@ -293,11 +293,13 @@ export default function Form({ sample, isLocal, refresh}) {
                 }}
               />
               <datalist id="authors_list">
-                {staticAuthors.map((reg_author, index) => (
+                <select>
+                  {staticAuthors.map((reg_author, index) => (
                   <option key={index} value={reg_author.username}>
                     {reg_author.fullname}
                   </option>
-                ))}
+                  ))}
+                </select>
               </datalist>
               {errors.author_name?.type === "validate" &&
                 currentAuthor !== "" && (
@@ -349,7 +351,7 @@ export default function Form({ sample, isLocal, refresh}) {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location" >
-            Locationes <span className="text-red-700">*</span>
+            Location <span className="text-red-700">*</span>
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="location" type="text"
             {...register("location", { required: true })}
@@ -363,7 +365,7 @@ export default function Form({ sample, isLocal, refresh}) {
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="natural_park" >
-            Natural park
+            Natural site
           </label>
           <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" defaultValue=""
             {...register("natural_park")}
@@ -902,9 +904,11 @@ export default function Form({ sample, isLocal, refresh}) {
                 }}
               />
               <datalist id="species_list">
-                {naturalParkSpecies.map((species, index) => (
+                <select>
+                  {naturalParkSpecies.map((species, index) => (
                   <option key={index}>{species}</option>
-                ))}
+                  ))}
+                </select>
               </datalist>
             </div>
           </div>
