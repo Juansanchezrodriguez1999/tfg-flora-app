@@ -199,6 +199,7 @@ export default function Samples() {
   };
 
   useEffect(async() => {
+    Time.getAllTime();
     const prueba = await Time.getAllTime();
     if(prueba.length>0){
       console.log(prueba)
@@ -311,6 +312,11 @@ export default function Samples() {
               The local database has never been updated
             </div>
           )}
+            {routerQuery?.success === "naturalParkAdded" &&
+              setBoxMessage(
+                "Success",
+                "The Natural Site has been correctly stored in the local repository."
+              )}
             {routerQuery?.success === "true" &&
               setBoxMessage(
                 "Success",

@@ -9,29 +9,45 @@ const Functions = {
   getRemoteRegisNumbers: async (setRemoteRegisNumbers) => {
     if (navigator.onLine){
       const remoteRNs = await FloraSamples.getAllRemoteRegisNumber();
-    setRemoteRegisNumbers(remoteRNs);
+      const remoteRNsLower = remoteRNs.map(function(rns) {
+        return rns.toLowerCase();
+    });
+    console.log(remoteRNsLower)
+    setRemoteRegisNumbers(remoteRNsLower);
     }
   },
   getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal,sample) => {
     console.log(sample)
     if (!isLocal) {
       const localRNs = await FloraSamples.getAllLocalRegisNumber();
+      const localRNsLower = localRNs.map(function(rns) {
+        return rns.toLowerCase();
+    });
+      console.log("buscandotipos")
+      console.log(localRNsLower)
+      console.log(localRNsLower[0])
+      console.log(typeof(localRNsLower))
+      console.log(typeof(localRNsLower[0]))
+      console.log("buscandotipos")
       if(sample!=undefined){
-        const RNsFilt = localRNs.filter(rns=>rns!=sample._id);
+        const RNsFilt = localRNsLower.filter(rns=>rns!=sample._id);
         setLocalRegisNumbers(RNsFilt);
         console.log("estamos en edit hay sample")
       }else{
-        setLocalRegisNumbers(localRNs);
+        setLocalRegisNumbers(localRNsLower);
         console.log("no hay sample")
       }
     } else {
         const localRNs = await FloraSamples.getAllLocalRegisNumber();
+        const localRNsLower = localRNs.map(function(rns) {
+          return rns.toLowerCase();
+      });
         if(sample!=undefined){
-          const RNsFilt = localRNs.filter(rns=>rns!=sample._id);
+          const RNsFilt = localRNsLower.filter(rns=>rns!=sample._id);
           setLocalRegisNumbers(RNsFilt);
           console.log("estamos en edit hay sample")
         }else{
-          setLocalRegisNumbers(localRNs);
+          setLocalRegisNumbers(localRNsLower);
           console.log("no hay sample")
         }
     }
@@ -56,8 +72,11 @@ const Functions = {
   getNaturalPark: async(refresh, setAllNaturalParks)=>{
     const registered_species = await FloraSpecies.getSpecies(refresh);
     const allNaturalParks = registered_species.map((doc) => doc._id)
-    console.log(allNaturalParks)
-    setAllNaturalParks(allNaturalParks)
+    const allNaturalParksLowe = allNaturalParks.map(function(naturalPark) {
+      return naturalPark.toLowerCase();
+  });
+    console.log(allNaturalParksLowe)
+    setAllNaturalParks(allNaturalParksLowe)
   },
   //Natural Park
   getSpecies: async (np,allSpecies,setNaturalParkSpecies ) => {
@@ -190,34 +209,40 @@ const Functions = {
   },
 
   getRefreshLocalDatabase: async () => {
-    Time.insertTime();
-    const allTimesArray = await Time.getAllTime();
-    console.log(allTimesArray)
-    const timesCompare = allTimesArray.map((doc) => doc.id)
-    console.log("todoslostiempos");
-    console.log(timesCompare);
-    console.log("timenuevo");
-    console.log(timesCompare[(timesCompare.length)-1])
-    if (timesCompare.length>1){
-      console.log("timeviejo")
-      console.log(timesCompare[(timesCompare.length)-2])
-      if (timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2]>10){
-        console.log(console.log(timesCompare[(timesCompare.length)-1],"-",timesCompare[(timesCompare.length)-2])," = ",timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2])
-        console.log("tiempo a borrar")
-        Time.removeTime(timesCompare[(timesCompare.length)-2]);
-        console.log("tiempo a borrar")
-        var update = "YES"
+    if(navigator.onLine){
+      Time.insertTime();
+      const allTimesArray = await Time.getAllTime();
+      console.log(allTimesArray)
+      const timesCompare = allTimesArray.map((doc) => doc.id)
+      console.log("todoslostiempos");
+      console.log(timesCompare);
+      console.log("timenuevo");
+      console.log(timesCompare[(timesCompare.length)-1])
+      if (timesCompare.length>1){
+        console.log("timeviejo")
+        console.log(timesCompare[(timesCompare.length)-2])
+        if (timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2]>10){
+          console.log(console.log(timesCompare[(timesCompare.length)-1],"-",timesCompare[(timesCompare.length)-2])," = ",timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2])
+          console.log("tiempo a borrar")
+          Time.removeTime(timesCompare[(timesCompare.length)-2]);
+          console.log("tiempo a borrar")
+          var update = "YES"
+        }
+        else{
+          console.log(console.log(timesCompare[(timesCompare.length)-1],"-",timesCompare[(timesCompare.length)-2])," = ",timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2])
+          console.log("tiempo a borrar")
+          Time.removeTime(timesCompare[(timesCompare.length)-1]);
+          var update = "NO"
+        }
       }
       else{
-        console.log(console.log(timesCompare[(timesCompare.length)-1],"-",timesCompare[(timesCompare.length)-2])," = ",timesCompare[(timesCompare.length)-1]-timesCompare[(timesCompare.length)-2])
-        console.log("tiempo a borrar")
-        Time.removeTime(timesCompare[(timesCompare.length)-1]);
-        var update = "NO"
+        var update = "YES"
       }
     }
     else{
-      var update = "YES"
+      var update = "NO"
     }
+    
     return update;
   }
         /*if(allTimesArray[(allTimesArray.length)-1]-allTimesArray[(allTimesArray.length)-2]>10){

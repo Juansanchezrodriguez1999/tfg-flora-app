@@ -37,7 +37,7 @@ export default function Form({ sample, isLocal, refresh}) {
     .then(() => {
         router.push({
           pathname: "/samples",
-          query: { success: true },
+          query: { success: "naturalParkAdded"  },
         });
       })
       .catch((e) => {
@@ -70,8 +70,8 @@ export default function Form({ sample, isLocal, refresh}) {
             </label>
             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" type="text"
                 {...register("natural_park", { required: true, validate: {
-                    local: (value) => !allNaturalParks.includes(value), 
-                    remote: (value) => !allNaturalParks.includes(value)
+                    local: (value) => !allNaturalParks.includes(value.toLowerCase()), 
+                    remote: (value) => !allNaturalParks.includes(value.toLowerCase())
                     }}
                 )}
             />
