@@ -9,8 +9,13 @@ import Table, {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FloraSamples } from "/lib/FloraSamples";
-import { GrAddCircle } from "react-icons/gr";
+import { GrAddCircle, GrUpdate } from "react-icons/gr";
 import { Time } from "../lib/Time";
+import { Functions } from "../components/form-components/Functions";
+import { FloraSpecies } from "../lib/FloraSpecies";
+import { FloraAuthors } from "../lib/FloraAuthors";
+
+
 
 export default function Samples() {
   const router = useRouter();
@@ -34,6 +39,16 @@ export default function Samples() {
     setSyncSuccess(false);
     setDropRemoteSuccess(false);
     setDropLocalSuccess(false);
+  };
+
+  const clickUpdate = async () => {
+    const lastr = await Functions.updateTimesAfterUpdate();
+    setLastRefresh(lastr)
+    if (navigator.onLine){
+      let refresh = "YES"
+      await FloraSpecies.getSpecies(refresh);
+      FloraAuthors.getUsers(refresh);
+    }
   };
 
   const preprocessSamples = (docs) => {
@@ -199,8 +214,8 @@ export default function Samples() {
   };
 
   useEffect(async() => {
-    Time.getAllTime();
     const prueba = await Time.getAllTime();
+    console.log(prueba.length);
     if(prueba.length>0){
       console.log(prueba)
       setLastRefresh(prueba[0].strDate.toString())
@@ -210,6 +225,8 @@ export default function Samples() {
     }
     
   }, []);
+
+
 
 
   useEffect(() => {
@@ -299,23 +316,17 @@ export default function Samples() {
     return (
       <div className="mx-auto grid place-items-center">
         <Header />
-        <div className="max-w-4xl mt-4 mb-4 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
+        <div className="max-w-4xl mt-4 mb-2 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
           <div className="grid place-items-center mb-6">
-          {lastRefresh !== "undefined" && (
-            <div className="text-gray-700 text-sm font-medium bg-purple-200 rounded-lg p-4 mb-4">
-              Local database update: &nbsp;  
-              {lastRefresh}
-            </div>
-          )}
-          {lastRefresh == "undefined" && (
-            <div className="text-gray-700 text-sm font-medium bg-purple-200 rounded-lg p-4 mb-4">
-              The local database has never been updated
-            </div>
-          )}
             {routerQuery?.success === "naturalParkAdded" &&
               setBoxMessage(
                 "Success",
                 "The Natural Site has been correctly stored in the local repository."
+              )}
+              {routerQuery?.success === "updateLocal" &&
+              setBoxMessage(
+                "Success",
+                "The local database has been updated correctly."
               )}
             {routerQuery?.success === "true" &&
               setBoxMessage(
@@ -401,6 +412,7 @@ export default function Samples() {
                 "Warning",
                 `You have ${numLocalDocs} samples pending to be synchronized.`
               )}
+
             <div className="flex gap-2">
               <Link href="/form">
                 <a className="bg-green-200 transition-colors ease-in-out hover:bg-green-400 py-2 px-2 rounded">
@@ -463,6 +475,43 @@ export default function Samples() {
           )}
         </div>
         
+        <div className="flex gap-2 mb-2">
+              {lastRefresh !== "undefined" && (
+                  <div className="flex items-center justify-center space-x-2 mr-2">
+                    Local database update: &nbsp;  
+                    {lastRefresh}
+                  </div>
+                )}
+                {lastRefresh == "undefined" && (
+                  <div className="flex items-center justify-center space-x-2 mr-2">
+                    The local database has never been updated
+                  </div>
+                )}
+              { navigator.onLine && (
+              <button
+                        className=""
+                        type="button"
+                        onClick={async() =>{clickUpdate().then(() => {
+                          router.push({
+                            pathname: "/samples",
+                            query: { success: "updateLocal"  },
+                          });
+                        })
+                        .catch((e) => {
+                          router.push({
+                            pathname: "/samples",
+                            query: { success: false, code: e.message },
+                          });
+                        }); }
+                                }      
+                      >
+                        <div className="flex items-center justify-center space-x-2 font-bold text-green-500 hover:text-green-800">
+                        <GrUpdate className/> <span> Update local database</span>
+                        </div>
+              </button>
+              )}
+
+        </div>
         <Footer />
       </div>
       

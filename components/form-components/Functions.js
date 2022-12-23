@@ -23,16 +23,12 @@ const Functions = {
       const localRNsLower = localRNs.map(function(rns) {
         return rns.toLowerCase();
     });
-      console.log("buscandotipos")
-      console.log(localRNsLower)
-      console.log(localRNsLower[0])
-      console.log(typeof(localRNsLower))
-      console.log(typeof(localRNsLower[0]))
-      console.log("buscandotipos")
       if(sample!=undefined){
+        console.log(localRNsLower)
         const RNsFilt = localRNsLower.filter(rns=>rns!=sample._id);
         setLocalRegisNumbers(RNsFilt);
         console.log("estamos en edit hay sample")
+        console.log(RNsFilt)
       }else{
         setLocalRegisNumbers(localRNsLower);
         console.log("no hay sample")
@@ -43,9 +39,11 @@ const Functions = {
           return rns.toLowerCase();
       });
         if(sample!=undefined){
+          console.log(localRNsLower)
           const RNsFilt = localRNsLower.filter(rns=>rns!=sample._id);
           setLocalRegisNumbers(RNsFilt);
           console.log("estamos en edit hay sample")
+          console.log(RNsFilt)
         }else{
           setLocalRegisNumbers(localRNsLower);
           console.log("no hay sample")
@@ -207,6 +205,37 @@ const Functions = {
     setStaticAuthors(registered_authors);
     setUsernames(registered_authors.map((d) => d.username));
   },
+  updateTimesAfterUpdate: async () =>{
+    Time.insertTime();
+    const allTimesArray = await Time.getAllTime();
+    console.log(allTimesArray)
+    const timesCompare = allTimesArray.map((doc) => doc.id)
+    console.log("numero de tiempos");
+    console.log(timesCompare.length);
+    console.log("todos los tiempos");
+    console.log(timesCompare);
+    console.log("tiempo añadido");
+    console.log(timesCompare[(timesCompare.length)-1])
+    if (timesCompare.length>1 && navigator.onLine){
+      console.log("Borro el tiempo viejo")
+      console.log(timesCompare[(timesCompare.length)-2])
+      Time.removeTime(timesCompare[(timesCompare.length)-2]);
+    }
+    else if (timesCompare.length>1 && !navigator.onLine){
+      console.log("Borro el tiempo nuevo")
+      console.log(timesCompare[(timesCompare.length)-1])
+      Time.removeTime(timesCompare[(timesCompare.length)-1]);
+    }
+    else{
+      console.log("No borro tiempo porque no hay o solo hay uno")
+    }
+    const newTime = await Time.getAllTime();
+    console.log("tiempo de actualizacion")
+    const updateTime= await newTime[0].strDate.toString();
+    console.log(updateTime)
+    return updateTime
+  },
+  
 
   getRefreshLocalDatabase: async () => {
     if(navigator.onLine){
