@@ -42,12 +42,15 @@ export default function Samples() {
   };
 
   const clickUpdate = async () => {
-    const lastr = await Functions.updateTimesAfterUpdate();
-    setLastRefresh(lastr)
     if (navigator.onLine){
+      const lastr = await Functions.updateTimesAfterUpdate();
+      setLastRefresh(lastr)
       let refresh = "YES"
       await FloraSpecies.getSpecies(refresh);
       FloraAuthors.getUsers(refresh);
+    }
+    else{
+      setOfflineMessage(true);
     }
   };
 
@@ -118,6 +121,7 @@ export default function Samples() {
           return (
             <div className="flex gap-2">
 
+              
               <Link href={viewDir}>
                 <a className="inline-block bg-blue-200 transition-colors ease-in-out hover:bg-blue-400 font-medium px-2 py-0.5 rounded-full">
                   <svg
@@ -222,6 +226,7 @@ export default function Samples() {
     }
     else{
       setLastRefresh("undefined")
+      
     }
     
   }, []);
@@ -323,11 +328,6 @@ export default function Samples() {
                 "Success",
                 "The Natural Site has been correctly stored in the local repository."
               )}
-              {routerQuery?.success === "updateLocal" &&
-              setBoxMessage(
-                "Success",
-                "The local database has been updated correctly."
-              )}
             {routerQuery?.success === "true" &&
               setBoxMessage(
                 "Success",
@@ -402,7 +402,7 @@ export default function Samples() {
               !routerQuery?.success &&
               setBoxMessage(
                 "Warning",
-                "You have no internet connection, you can continue collecting samples and they will be stored in the local database."
+                "You have no internet connection,  you can not update local database but you can continue collecting samples and they will be stored in the local database."
               )}
             {numLocalDocs > 0 &&
               navigator.onLine &&
@@ -494,7 +494,6 @@ export default function Samples() {
                         onClick={async() =>{clickUpdate().then(() => {
                           router.push({
                             pathname: "/samples",
-                            query: { success: "updateLocal"  },
                           });
                         })
                         .catch((e) => {
