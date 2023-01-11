@@ -12,19 +12,19 @@ const Functions = {
       const remoteRNsLower = remoteRNs.map(function(rns) {
         return rns.toLowerCase();
     });
-    console.log("los id remotos en minusculas son")
+    console.log("los id remotos en minusculas son COMPARACION")
     console.log(remoteRNsLower)
     setRemoteRegisNumbers(remoteRNsLower);
     }
   },
   getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal,sample) => {
-    const sampleIdLower = sample._id.toLowerCase();
     if (!isLocal) {
       const localRNs = await FloraSamples.getAllLocalRegisNumber();
       const localRNsLower = localRNs.map(function(rns) {
         return rns.toLowerCase();
     });
     if(sample!=undefined){
+      const sampleIdLower = sample._id.toLowerCase();
       console.log("estamos en edit hay sample que es ")
       console.log(sampleIdLower)
       console.log("los id locales en minusculas son ")
@@ -36,6 +36,8 @@ const Functions = {
       console.log(RNsFilt)
     }else{
       console.log("no hay sample")
+      console.log("los id locales en minusculas son COMPARACION")
+      console.log(localRNsLower)
       setLocalRegisNumbers(localRNsLower);
     }
     } else {
@@ -44,6 +46,7 @@ const Functions = {
           return rns.toLowerCase();
       });
         if(sample!=undefined){
+          const sampleIdLower = sample._id.toLowerCase();
           console.log("estamos en edit hay sample que es ")
           console.log(sampleIdLower)
           console.log("los id locales en minusculas son ")
@@ -55,6 +58,8 @@ const Functions = {
           console.log(RNsFilt)
         }else{
           console.log("no hay sample")
+          console.log("los id locales en minusculas son COMPARACION")
+          console.log(localRNsLower)
           setLocalRegisNumbers(localRNsLower);
         }
     }
