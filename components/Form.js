@@ -240,9 +240,14 @@ export default function Form({ sample, isLocal, refresh}) {
               }}
             )}
           />
+          {errors.no_register?.type === "required" && (
+            <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+              Nº Register is required
+            </p>
+          )} 
           {errors.no_register?.type === "local" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-              Nº Register is already associated with another sample in the local database
+              Nº Register is already associated with another sample in the local database 
             </p>
           )}
           {errors.no_register?.type === "remote" && (
