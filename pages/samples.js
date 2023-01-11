@@ -426,7 +426,7 @@ export default function Samples() {
                 <a className="bg-pink-200 transition-colors ease-in-out hover:bg-pink-400 py-2 px-2 rounded">
                   <div className="flex items-center justify-center space-x-2">
                     <GrAddCircle />
-                    <span>Add Natural Park</span>
+                    <span>Add Natural Site</span>
                   </div>
                 </a>
               </Link>

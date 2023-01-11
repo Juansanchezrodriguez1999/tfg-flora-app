@@ -55,7 +55,7 @@ export default function Form({ sample, isLocal, refresh}) {
       >
         <div className="mb-4">
           <label className="block text-green-500 text-lg font-bold mb-4">
-            Add Natural Park
+            Add Natural Site
           </label>
         </div>
         <div className="mb-4">
@@ -65,7 +65,7 @@ export default function Form({ sample, isLocal, refresh}) {
                 </p>
             }
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="natural_park" >
-                Natural Park 
+                Natural Site 
                 <span className="text-red-700">*</span>
             </label>
             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" type="text"
@@ -77,12 +77,12 @@ export default function Form({ sample, isLocal, refresh}) {
             />
             {errors.natural_park?.type === "local" && (
                 <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                Natural Park is already associated with another natural park in the local database
+                Natural Site is already associated with another natural site in the local database
                 </p>
             )}
             {errors.natural_park?.type === "remote" && (
                 <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                Natural Park is already associated with another natural park in the remote database
+                Natural Site is already associated with another natural site in the remote database
                 </p>
           )}
         </div>

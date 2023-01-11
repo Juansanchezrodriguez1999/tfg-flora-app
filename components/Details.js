@@ -157,7 +157,7 @@ export default function Details({ sample, isLocal }) {
                 {sample.Location}
               </li>
               <li className="flex gap-2">
-                <p className="text-gray-700 font-bold">Natural park:</p>
+                <p className="text-gray-700 font-bold">Natural site:</p>
                 {sample.Natural_Park}
               </li>
             </ul>
