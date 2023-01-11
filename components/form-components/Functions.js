@@ -12,41 +12,50 @@ const Functions = {
       const remoteRNsLower = remoteRNs.map(function(rns) {
         return rns.toLowerCase();
     });
+    console.log("los id remotos en minusculas son")
     console.log(remoteRNsLower)
     setRemoteRegisNumbers(remoteRNsLower);
     }
   },
   getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal,sample) => {
-    console.log(sample)
+    const sampleIdLower = sample._id.toLowerCase();
     if (!isLocal) {
       const localRNs = await FloraSamples.getAllLocalRegisNumber();
       const localRNsLower = localRNs.map(function(rns) {
         return rns.toLowerCase();
     });
-      if(sample!=undefined){
-        console.log(localRNsLower)
-        const RNsFilt = localRNsLower.filter(rns=>rns!=sample._id);
-        setLocalRegisNumbers(RNsFilt);
-        console.log("estamos en edit hay sample")
-        console.log(RNsFilt)
-      }else{
-        setLocalRegisNumbers(localRNsLower);
-        console.log("no hay sample")
-      }
+    if(sample!=undefined){
+      console.log("estamos en edit hay sample que es ")
+      console.log(sampleIdLower)
+      console.log("los id locales en minusculas son ")
+      console.log(localRNsLower)
+      const RNsFilt = localRNsLower.filter(function(item){
+        return item!==sampleIdLower });
+      setLocalRegisNumbers(RNsFilt);
+      console.log("los id locales que quedan tras eliminar el mismo son")
+      console.log(RNsFilt)
+    }else{
+      console.log("no hay sample")
+      setLocalRegisNumbers(localRNsLower);
+    }
     } else {
         const localRNs = await FloraSamples.getAllLocalRegisNumber();
         const localRNsLower = localRNs.map(function(rns) {
           return rns.toLowerCase();
       });
         if(sample!=undefined){
+          console.log("estamos en edit hay sample que es ")
+          console.log(sampleIdLower)
+          console.log("los id locales en minusculas son ")
           console.log(localRNsLower)
-          const RNsFilt = localRNsLower.filter(rns=>rns!=sample._id);
+          const RNsFilt = localRNsLower.filter(function(item){
+            return item!==sampleIdLower });
           setLocalRegisNumbers(RNsFilt);
-          console.log("estamos en edit hay sample")
+          console.log("los id locales que quedan tras eliminar el mismo son")
           console.log(RNsFilt)
         }else{
-          setLocalRegisNumbers(localRNsLower);
           console.log("no hay sample")
+          setLocalRegisNumbers(localRNsLower);
         }
     }
   },
