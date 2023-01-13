@@ -219,9 +219,7 @@ export default function Samples() {
 
   useEffect(async() => {
     const prueba = await Time.getAllTime();
-    console.log(prueba.length);
     if(prueba.length>0){
-      console.log(prueba)
       setLastRefresh(prueba[0].strDate.toString())
     }
     else{
@@ -235,13 +233,6 @@ export default function Samples() {
 
 
   useEffect(() => {
-    //console.log(hola)
-    //console.log(typeof(hola))
-    /*const arrayLastTimeRefresh = hola2.map((doc) => doc.strDate)
-    console.log(arrayLastTimeRefresh)
-    setLastRefresh(arrayLastTimeRefresh[0]);
-    console.log(lastRefresh);*/
-
     if (!navigator.onLine) {
       setOfflineMessage(true);
     }

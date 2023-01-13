@@ -2,18 +2,12 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import React from "react";
-import { Dashboard, useUppy } from "@uppy/react";
-import Uppy from "@uppy/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FloraSamples } from "/lib/FloraSamples";
-import { v4 as uuidv4 } from "uuid";
-import { GrLocation } from "react-icons/gr";
 import { BiSend, BiPlus } from "react-icons/bi";
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import { Functions } from "./form-components/Functions";
-import FormIndex from "./FormIndex";
 import { FloraSpecies } from "../lib/FloraSpecies";
 
 export default function Form({ sample, isLocal, refresh}) {
@@ -26,8 +20,6 @@ export default function Form({ sample, isLocal, refresh}) {
   } = useForm();
   const [allNaturalParks, setAllNaturalParks] = useState([]);
 
-  //console.log(lastDateTime)
-  //console.log(currentDateTime)
   useEffect(() => {
     Functions.getNaturalPark(refresh,setAllNaturalParks);
   }, [refresh]);

@@ -5,7 +5,6 @@ import Footer from "/components/Footer";
 import { useRouter } from "next/router";
 import Form_np from "/components/Form_np";
 import { Functions } from "../components/form-components/Functions";
-import { Time } from "../lib/Time";
 
 
 export default function FormPage() {
@@ -14,16 +13,14 @@ export default function FormPage() {
   const [refresh, setRefresh] = useState();
 
   useEffect(async () => {
-    let hola=null;
+    let refreshYesNo=null;
     await Functions.getRefreshLocalDatabase().then(valor=>{
-      hola=valor
+      refreshYesNo=valor
     });
-    //console.log(hola)
-    //console.log(typeof(hola))
-    setRefresh(hola.toString())
+ 
+    setRefresh(refreshYesNo.toString())
   }, []);
 
-  //console.log(refresh)
   if (status === "authenticated") {
     return (
       <div className="mx-auto grid place-items-center">

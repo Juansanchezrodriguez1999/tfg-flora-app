@@ -13,7 +13,6 @@ import { BiSend, BiPlus } from "react-icons/bi";
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import { Functions } from "./form-components/Functions";
-import FormIndex from "./FormIndex";
 
 export default function Form({ sample, isLocal, refresh}) {
   const router = useRouter();
@@ -59,13 +58,9 @@ export default function Form({ sample, isLocal, refresh}) {
     });
   });
 
-  //console.log(lastDateTime)
-  //console.log(currentDateTime)
   useEffect(() => {
-    //setRefresh(Functions.refreshLocalDataBase());
     Functions.getAuthors(setStaticAuthors,setUsernames,refresh);
     setIsGeolocationAvailable("geolocation" in navigator);
-    //Functions.refreshLocalDataBase();
     Functions.getAllSpecies(setAllSpecies, refresh);
     Functions.getLocalRegisNumbers(setLocalRegisNumbers,isLocal,sample);
     Functions.getRemoteRegisNumbers(setRemoteRegisNumbers);
@@ -97,7 +92,6 @@ export default function Form({ sample, isLocal, refresh}) {
       setValue("subcommunity_year", sample.Subcommunity_Year);
       setSubcommunityAuthors(sample.Subcommunity_Authors);
       setSpecies(sample.Species);
-      console.log("islocal")
       if (!isLocal) {
         FloraSamples.getPictures(sample.Pictures).then((urls) => {
           urls.map((url, index) => {
