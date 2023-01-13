@@ -65,20 +65,14 @@ export default function Form({ sample, isLocal, refresh }) {
     Functions.getLocalRegisNumbers(setLocalRegisNumbers, isLocal, sample);
     Functions.getRemoteRegisNumbers(setRemoteRegisNumbers);
     if (sample) {
-      let UTM_split = sample.UTM.split("");
-      UTM_split =
-        UTM_split[0] +
-        UTM_split[1] +
-        UTM_split[2] +
+      let UTM_split =
+        sample.UTM.substring(0, 3) +
         " " +
-        UTM_split[3] +
-        UTM_split[4] +
+        sample.UTM.substring(3, 5) +
         " " +
-        UTM_split[5] +
-        UTM_split[6] +
+        sample.UTM.substring(5, 7) +
         " " +
-        UTM_split[7] +
-        UTM_split[8];
+        sample.UTM.substring(7, 9);
       setValue("no_register", sample._id);
       setAuthors(sample.Authors);
       setValue("group", sample.Group);
