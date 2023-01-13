@@ -11,14 +11,9 @@ export default function FormPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [refresh, setRefresh] = useState();
-  const [lastRefresh, setLastRefresh] = useState();
-  console.log("lastrefresh")
-  console.log(lastRefresh)
 
   useEffect(async () => {
     let refreshYesNo=null;
-    console.log("lastrefresh")
-    console.log(lastRefresh)
     await Functions.getRefreshLocalDatabase().then(valor=>{
       refreshYesNo=valor
     });
@@ -30,7 +25,7 @@ export default function FormPage() {
     return (
       <div className="mx-auto grid place-items-center">
         <Header />
-        <Form refresh={refresh} lastRefresh={lastRefresh}/>
+        <Form refresh={refresh} />
         <Footer />
       </div>
     );
