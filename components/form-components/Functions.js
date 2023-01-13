@@ -21,7 +21,7 @@ const Functions = {
       const localRNsLower = localRNs.map(function(rns) {
         return rns.toLowerCase();
     });
-    if(sample!=undefined){
+    if(sample!==undefined){
       const sampleIdLower = sample._id.toLowerCase();
       const RNsFilt = localRNsLower.filter(function(item){
         return item!==sampleIdLower });
@@ -34,7 +34,7 @@ const Functions = {
         const localRNsLower = localRNs.map(function(rns) {
           return rns.toLowerCase();
       });
-        if(sample!=undefined){
+        if(sample!==undefined){
           const sampleIdLower = sample._id.toLowerCase();
           const RNsFilt = localRNsLower.filter(function(item){
             return item!==sampleIdLower });

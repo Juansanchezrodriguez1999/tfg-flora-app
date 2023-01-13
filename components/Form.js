@@ -209,6 +209,8 @@ export default function Form({ sample, isLocal, refresh}) {
   }, [status]);
   if (status === "authenticated") {
     return (
+      <>
+      <title>Form</title>
       <form className="max-w-4xl mt-4 mb-4 bg-white shadow-md rounded px-8 pt-6 pb-8 w-full"
         onSubmit={handleSubmit(submitForm)}
       >
@@ -221,27 +223,27 @@ export default function Form({ sample, isLocal, refresh}) {
           {!navigator.onLine &&
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-yellow-200 rounded">
               No connection, validation postponed to synchronization
-            </p>
-          }
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="no_register" >
-            Nº Register 
+            </p>}
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="no_register">
+            Nº Register
             <span className="text-red-700">*</span>
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="no_register" type="text"
-            {...register("no_register", { required: true, validate: {
+            {...register("no_register", {
+              required: true, validate: {
                 local: (value) => !localRegisNumbers.includes(value.toLowerCase()),
-                remote: (value) => !remoteRegisNumbers.includes(value.toLowerCase()) 
-              }}
-            )}
-          />
+                remote: (value) => !remoteRegisNumbers.includes(value.toLowerCase())
+              }
+            }
+            )} />
           {errors.no_register?.type === "required" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
               Nº Register is required
             </p>
-          )} 
+          )}
           {errors.no_register?.type === "local" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-              Nº Register is already associated with another sample in the local database 
+              Nº Register is already associated with another sample in the local database
             </p>
           )}
           {errors.no_register?.type === "remote" && (
@@ -251,12 +253,11 @@ export default function Form({ sample, isLocal, refresh}) {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="group" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="group">
             Group <span className="text-red-700">*</span>
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="group" type="text"
-            {...register("group", { required: true })}
-          />
+            {...register("group", { required: true })} />
           {errors.group?.type === "required" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
               Group is required
@@ -264,12 +265,11 @@ export default function Form({ sample, isLocal, refresh}) {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="project" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="project">
             Project <span className="text-red-700">*</span>
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="project" type="text"
-            {...register("project", { required: true })}
-          />
+            {...register("project", { required: true })} />
           {errors.project?.type === "required" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
               Project is required
@@ -277,7 +277,7 @@ export default function Form({ sample, isLocal, refresh}) {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="author_name" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="author_name">
             Authors
           </label>
           <div className="flex flex-wrap mb-2 items-center">
@@ -289,14 +289,13 @@ export default function Form({ sample, isLocal, refresh}) {
                 onChange={(e) => {
                   setCurrentAuthor(e.target.value);
                   setAuthorClick(false);
-                }}
-              />
+                } } />
               <datalist id="authors_list">
                 <select>
                   {staticAuthors.map((reg_author, index) => (
-                  <option key={index} value={reg_author.username}>
-                    {reg_author.fullname}
-                  </option>
+                    <option key={index} value={reg_author.username}>
+                      {reg_author.fullname}
+                    </option>
                   ))}
                 </select>
               </datalist>
@@ -316,9 +315,9 @@ export default function Form({ sample, isLocal, refresh}) {
               <button className="inline-flex items-center justify-center w-7 h-7 text-white duration-150 bg-green-500 transition-colors ease-in-out hover:bg-green-700 rounded-full focus:shadow-outline disabled:opacity-30" type="button"
                 disabled={!usernames.includes(currentAuthor)}
                 onClick={() => {
-                  Functions.addAuthor(currentAuthor,authors,setAuthors,setCurrentAuthor,setValue);
+                  Functions.addAuthor(currentAuthor, authors, setAuthors, setCurrentAuthor, setValue);
                   setAuthorClick(true);
-                }}
+                } }
               >
                 <BiPlus />
               </button>
@@ -327,14 +326,14 @@ export default function Form({ sample, isLocal, refresh}) {
         </div>
         <div className="flex flex-wrap max-w-4xl mb-4">
           {authors.map((author, index) => (
-            <span className="flex-initial text-gray-700 font-bold pl-2 pr-2 bg-green-200 rounded mb-2 mr-2" key={index} >
+            <span className="flex-initial text-gray-700 font-bold pl-2 pr-2 bg-green-200 rounded mb-2 mr-2" key={index}>
               <div className="flex space-x-2 items-center">
                 <p className="flex-initial">{author}</p>
                 {author !== session.user.username && (
                   <a className="flex-initial inline-flex items-center justify-center w-4 h-4 ml-2 mr-2 text-white transition-colors duration-150 rounded-full focus:shadow-outline"
-                    onClick={() => Functions.removeAuthor(author,authors,setAuthors)}
+                    onClick={() => Functions.removeAuthor(author, authors, setAuthors)}
                   >
-                    <svg fill="#10B981" viewBox="0 0 24 24" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg" >
+                    <svg fill="#10B981" viewBox="0 0 24 24" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z" />
                     </svg>
                   </a>
@@ -349,12 +348,11 @@ export default function Form({ sample, isLocal, refresh}) {
           </label>
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">
             Location <span className="text-red-700">*</span>
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="location" type="text"
-            {...register("location", { required: true })}
-          />
+            {...register("location", { required: true })} />
           {errors.location?.type === "required" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
               Location is required
@@ -363,12 +361,12 @@ export default function Form({ sample, isLocal, refresh}) {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="natural_park" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="natural_park">
             Natural site
           </label>
           <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" defaultValue=""
             {...register("natural_park")}
-            onChange={(e) => Functions.getSpecies(e.target.value,allSpecies,setNaturalParkSpecies)}
+            onChange={(e) => Functions.getSpecies(e.target.value, allSpecies, setNaturalParkSpecies)}
           >
             <option value="" disabled hidden />
             {allSpecies.map((np_doc, index) => (
@@ -385,32 +383,28 @@ export default function Form({ sample, isLocal, refresh}) {
         <div className="mb-4">
           <ul className="flex space-x-4">
             <li
-              className={
-                mode === "latlon"
-                  ? "cursor-pointer py-2 px-4 border-b-8 text-green-500 border-green-500"
-                  : "cursor-pointer py-2 px-4 text-gray-500 border-b-8"
-              }
+              className={mode === "latlon"
+                ? "cursor-pointer py-2 px-4 border-b-8 text-green-500 border-green-500"
+                : "cursor-pointer py-2 px-4 text-gray-500 border-b-8"}
               onClick={() => {
                 setMode("latlon");
                 setUTM("");
                 setValue("utm", "");
-              }}
+              } }
             >
               Coordinates
             </li>
             <li
-              className={
-                mode === "utm"
-                  ? "cursor-pointer py-2 px-4 border-b-8 text-green-500 border-green-500"
-                  : "cursor-pointer py-2 px-4 text-gray-500 border-b-8"
-              }
+              className={mode === "utm"
+                ? "cursor-pointer py-2 px-4 border-b-8 text-green-500 border-green-500"
+                : "cursor-pointer py-2 px-4 text-gray-500 border-b-8"}
               onClick={() => {
                 setMode("utm");
                 setLatitude("");
                 setValue("latitude", "");
                 setLongitude("");
                 setValue("longitude", "");
-              }}
+              } }
             >
               UTM
             </li>
@@ -428,14 +422,13 @@ export default function Form({ sample, isLocal, refresh}) {
                   min: -80,
                   max: 84,
                 })}
-                onChange={(e) => setLatitude(e.target.value)}
-              />
+                onChange={(e) => setLatitude(e.target.value)} />
               {(errors.latitude?.type === "required" || isSubmitted) &&
                 (!latitude || latitude === "") && (
                   <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                     Latitude is required
                   </p>
-              )}
+                )}
               {(errors.latitude?.type === "max" ||
                 errors.latitude?.type === "min" ||
                 isSubmitted) &&
@@ -455,8 +448,7 @@ export default function Form({ sample, isLocal, refresh}) {
                   min: -180,
                   max: 180,
                 })}
-                onChange={(e) => setLongitude(e.target.value)}
-              />
+                onChange={(e) => setLongitude(e.target.value)} />
               {(errors.longitude?.type === "required" || isSubmitted) &&
                 (!longitude || longitude === "") && (
                   <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
@@ -476,7 +468,7 @@ export default function Form({ sample, isLocal, refresh}) {
         )}
         {mode === "utm" && (
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="utm" >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="utm">
               UTM <span className="text-red-700">*</span>
             </label>
             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline uppercase" id="utm" type="text"
@@ -484,8 +476,7 @@ export default function Form({ sample, isLocal, refresh}) {
                 required: mode === "utm",
                 validate: (value) => Functions.validateUTM(value),
               })}
-              onChange={(e) => setUTM(e.target.value)}
-            />
+              onChange={(e) => setUTM(e.target.value)} />
             {(errors.utm?.type === "required" || isSubmitted) &&
               (!utm || utm === "") && (
                 <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
@@ -503,7 +494,7 @@ export default function Form({ sample, isLocal, refresh}) {
         {isGeolocationAvailable && (
           <div className="flex items-center justify-between mb-4">
             <button className="bg-green-200 transition-colors ease-in-out hover:bg-green-400 py-2 px-2 rounded" type="button"
-              onClick={() => Functions.getCoordinates(mode,setUTM,setLatitude,setLongitude,setValue)}
+              onClick={() => Functions.getCoordinates(mode, setUTM, setLatitude, setLongitude, setValue)}
             >
               <div className="flex justify-center items-center space-x-2">
                 <GrLocation />
@@ -518,34 +509,31 @@ export default function Form({ sample, isLocal, refresh}) {
           </label>
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lithology" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lithology">
             Lithology
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="lithology" type="text"
-            {...register("lithology")}
-          />
+            {...register("lithology")} />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="coverage">
             Coverage (%)
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="coverage" type="number" step="any"
-            {...register("coverage", { min: 0, max: 100 })}
-          />
+            {...register("coverage", { min: 0, max: 100 })} />
           {(errors.coverage?.type === "min" ||
             errors.coverage?.type === "max") && (
-            <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-              Coverage must be in the range (0, 100)
-            </p>
-          )}
+              <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                Coverage must be in the range (0, 100)
+              </p>
+            )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="altitude" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="altitude">
             Altitude (m)
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="altitude" type="number" step="any"
-            {...register("altitude", { min: 0 })}
-          />
+            {...register("altitude", { min: 0 })} />
           {errors.altitude?.type === "min" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
               Altitude must be positive
@@ -553,26 +541,24 @@ export default function Form({ sample, isLocal, refresh}) {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="plotslope" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="plotslope">
             Plot Slope (º)
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="plotslope" type="number" step="any"
-            {...register("plotslope", { min: 0, max: 180 })}
-          />
+            {...register("plotslope", { min: 0, max: 180 })} />
           {(errors.plotslope?.type === "min" ||
             errors.plotslope?.type === "max") && (
-            <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-              Plot Slope must be in the range (0, 180)
-            </p>
-          )}
+              <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                Plot Slope must be in the range (0, 180)
+              </p>
+            )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="vegetationheight">
             Vegetation Height (cm)
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vegetationheight" type="number" step="any"
-            {...register("vegetationheight", { min: 0 })}
-          />
+            {...register("vegetationheight", { min: 0 })} />
           {errors.vegetationheight?.type === "min" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
               Vegetation height must be positive
@@ -580,12 +566,11 @@ export default function Form({ sample, isLocal, refresh}) {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="plotarea" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="plotarea">
             Plot Area (m2)
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="plotarea" type="number" step="any"
-            {...register("plotarea", { min: 0 })}
-          />
+            {...register("plotarea", { min: 0 })} />
           {errors.plotarea?.type === "min" && (
             <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
               Plot area must be positive
@@ -593,7 +578,7 @@ export default function Form({ sample, isLocal, refresh}) {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="plotorientation" >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="plotorientation">
             Plot Orientation
           </label>
           <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="plotorientation" defaultValue=""
@@ -623,8 +608,7 @@ export default function Form({ sample, isLocal, refresh}) {
             Ecology
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="ecology" type="text"
-            {...register("ecology")}
-          />
+            {...register("ecology")} />
         </div>
         <div className="mb-4">
           <div className="inline-flex items-center">
@@ -635,8 +619,7 @@ export default function Form({ sample, isLocal, refresh}) {
               <input className="form-check-input form-check-input appearance-none rounded-full mr-2 h-4 w-4 border border-gray-300 bg-white checked:bg-green-500 checked:border-green-500" type="radio" id="inlineRadioYes" name="community_question" value="Yes"
                 {...register("community_question", { required: true })}
                 checked={thereIsCommunity}
-                onClick={() => setThereIsCommunity(true)}
-              />
+                onClick={() => setThereIsCommunity(true)} />
               <label className="form-check-label inline-block text-gray-700" htmlFor="inlineRadioYes">
                 Yes
               </label>
@@ -645,8 +628,7 @@ export default function Form({ sample, isLocal, refresh}) {
               <input className="form-check-input form-check-input appearance-none rounded-full mr-2 h-4 w-4 border border-gray-300 bg-white checked:bg-green-500 checked:border-green-500" type="radio" id="inlineRadioNo" name="community_question" value="No"
                 {...register("community_question", { required: true })}
                 checked={!thereIsCommunity}
-                onClick={() => setThereIsCommunity(false)}
-              />
+                onClick={() => setThereIsCommunity(false)} />
               <label className="form-check-label inline-block text-gray-700" htmlFor="inlineRadioNo">
                 No
               </label>
@@ -665,8 +647,7 @@ export default function Form({ sample, isLocal, refresh}) {
                 Community name <span className="text-red-700">*</span>
               </label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="community" type="text"
-                {...register("community", { required: thereIsCommunity })}
-              />
+                {...register("community", { required: thereIsCommunity })} />
               {errors.community?.type === "required" && (
                 <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                   Community name is required
@@ -681,14 +662,13 @@ export default function Form({ sample, isLocal, refresh}) {
                 {...register("community_year", {
                   min: 0,
                   max: new Date().getFullYear(),
-                })}
-              />
+                })} />
               {(errors.community_year?.type === "max" ||
                 errors.community_year?.type === "min") && (
-                <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                  The year entered is invalid
-                </p>
-              )}
+                  <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                    The year entered is invalid
+                  </p>
+                )}
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="community_author_name">
@@ -703,8 +683,7 @@ export default function Form({ sample, isLocal, refresh}) {
                     onChange={(e) => {
                       setCurrentCommunityAuthor(e.target.value);
                       setCommunityAuthorClick(false);
-                    }}
-                  />
+                    } } />
                   {errors.community_author_name?.type === "validate" &&
                     currentCommunityAuthor !== "" && (
                       <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
@@ -720,13 +699,11 @@ export default function Form({ sample, isLocal, refresh}) {
                 </div>
                 <div className="md:w-1/4 px-3 mb-2 md:mb-0">
                   <button className="inline-flex items-center justify-center w-7 h-7 text-white duration-150 bg-green-500 transition-colors ease-in-out hover:bg-green-700 rounded-full focus:shadow-outline disabled:opacity-30" type="button"
-                    disabled={
-                      !currentCommunityAuthor || currentCommunityAuthor === ""
-                    }
+                    disabled={!currentCommunityAuthor || currentCommunityAuthor === ""}
                     onClick={() => {
-                      Functions.addCommunityAuthor(currentCommunityAuthor,communityAuthors,setCommunityAuthors,setCurrentCommunityAuthor,setValue);
+                      Functions.addCommunityAuthor(currentCommunityAuthor, communityAuthors, setCommunityAuthors, setCurrentCommunityAuthor, setValue);
                       setCommunityAuthorClick(true);
-                    }}
+                    } }
                   >
                     <BiPlus />
                   </button>
@@ -741,7 +718,7 @@ export default function Form({ sample, isLocal, refresh}) {
                       {c_author}
                     </p>
                     <a className="flex-initial inline-flex items-center justify-center w-4 h-4 ml-2 mr-2 text-white transition-colors duration-150 rounded-full focus:shadow-outline"
-                      onClick={() => Functions.removeCommunityAuthor(c_author,communityAuthors,setCommunityAuthors)}
+                      onClick={() => Functions.removeCommunityAuthor(c_author, communityAuthors, setCommunityAuthors)}
                     >
                       <svg fill="#10B981" viewBox="0 0 24 24" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z" />
@@ -762,8 +739,7 @@ export default function Form({ sample, isLocal, refresh}) {
               <input className="form-check-input form-check-input appearance-none rounded-full mr-2 h-4 w-4 border border-gray-300 bg-white checked:bg-green-500 checked:border-green-500" type="radio" id="inlineRadioYes" name="subcommunity_question" value="Yes"
                 {...register("subcommunity_question", { required: true })}
                 checked={thereIsSubcommunity}
-                onClick={() => setThereIsSubcommunity(true)}
-              />
+                onClick={() => setThereIsSubcommunity(true)} />
               <label className="form-check-label inline-block text-gray-700" htmlFor="inlineRadioYes">
                 Yes
               </label>
@@ -772,9 +748,8 @@ export default function Form({ sample, isLocal, refresh}) {
               <input className="form-check-input form-check-input appearance-none rounded-full mr-2 h-4 w-4 border border-gray-300 bg-white checked:bg-green-500 checked:border-green-500" type="radio" id="inlineRadioNo" name="subcommunity_question" value="No"
                 {...register("subcommunity_question", { required: true })}
                 checked={!thereIsSubcommunity}
-                onClick={() => setThereIsSubcommunity(false)}
-              />
-              <label className="form-check-label inline-block text-gray-700" htmlFor="inlineRadioNo" >
+                onClick={() => setThereIsSubcommunity(false)} />
+              <label className="form-check-label inline-block text-gray-700" htmlFor="inlineRadioNo">
                 No
               </label>
             </div>
@@ -792,8 +767,7 @@ export default function Form({ sample, isLocal, refresh}) {
                 Sub-community name <span className="text-red-700">*</span>
               </label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="subcommunity" type="text"
-                {...register("subcommunity", { required: thereIsSubcommunity })}
-              />
+                {...register("subcommunity", { required: thereIsSubcommunity })} />
               {errors.subcommunity?.type === "required" && (
                 <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                   Subcommunity name is required
@@ -801,24 +775,23 @@ export default function Form({ sample, isLocal, refresh}) {
               )}
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subcommunity_year" >
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subcommunity_year">
                 Sub-community year
               </label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="subcommunity_year" type="number" step="any"
                 {...register("subcommunity_year", {
                   min: 0,
                   max: new Date().getFullYear(),
-                })}
-              />
+                })} />
               {(errors.subcommunity_year?.type === "max" ||
                 errors.subcommunity_year?.type === "min") && (
-                <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                  The year entered is invalid
-                </p>
-              )}
+                  <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                    The year entered is invalid
+                  </p>
+                )}
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subcommunity_author_name" >
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subcommunity_author_name">
                 Sub-community authors
               </label>
               <div className="flex flex-wrap -mx-2 mb-2 items-center">
@@ -830,8 +803,7 @@ export default function Form({ sample, isLocal, refresh}) {
                     onChange={(e) => {
                       setCurrentSubcommunityAuthor(e.target.value);
                       setSubcommunityAuthorClick(false);
-                    }}
-                  />
+                    } } />
                   {errors.subcommunity_author_name?.type === "validate" &&
                     currentSubcommunityAuthor !== "" && (
                       <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
@@ -848,14 +820,12 @@ export default function Form({ sample, isLocal, refresh}) {
                 </div>
                 <div className="md:w-1/4 px-3 mb-2 md:mb-0">
                   <button className="inline-flex items-center justify-center w-7 h-7 mr-2 text-white duration-150 bg-green-500 transition-colors ease-in-out hover:bg-green-700 rounded-full focus:shadow-outline disabled:opacity-30" type="button"
-                    disabled={
-                      !currentSubcommunityAuthor ||
-                      currentSubcommunityAuthor === ""
-                    }
+                    disabled={!currentSubcommunityAuthor ||
+                      currentSubcommunityAuthor === ""}
                     onClick={() => {
-                      Functions.addSubcommunityAuthor(currentSubcommunityAuthor,subcommunityAuthors,setSubcommunityAuthors,setCurrentSubcommunityAuthor,setValue);
+                      Functions.addSubcommunityAuthor(currentSubcommunityAuthor, subcommunityAuthors, setSubcommunityAuthors, setCurrentSubcommunityAuthor, setValue);
                       setSubcommunityAuthorClick(true);
-                    }}
+                    } }
                   >
                     <BiPlus />
                   </button>
@@ -868,10 +838,9 @@ export default function Form({ sample, isLocal, refresh}) {
                   <div className="flex space-x-2 items-center">
                     <p className="flex-initial">{sa_author}</p>
                     <a className="flex-initial inline-flex items-center justify-center w-4 h-4 ml-2 mr-2 text-white transition-colors duration-150 rounded-full focus:shadow-outline"
-                      onClick={() => Functions.removeSubcommunityAuthor(sa_author,subcommunityAuthors,setSubcommunityAuthors)
-                        }
+                      onClick={() => Functions.removeSubcommunityAuthor(sa_author, subcommunityAuthors, setSubcommunityAuthors)}
                     >
-                      <svg fill="#10B981" viewBox="0 0 24 24" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg" >
+                      <svg fill="#10B981" viewBox="0 0 24 24" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z" />
                       </svg>
                     </a>
@@ -888,24 +857,22 @@ export default function Form({ sample, isLocal, refresh}) {
         </div>
         <div className="flex flex-nowrap -mx-3">
           <div className="md:w-2/3 px-3 md:mb-0">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="species_name" >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="species_name">
               Name <span className="text-red-700">*</span>
             </label>
             <div>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="species_name" type="text" list="species_list"
                 {...register("species_name", {
-                  validate: (value) =>
-                    (!value || value === "") && species.length !== 0,
+                  validate: (value) => (!value || value === "") && species.length !== 0,
                 })}
                 onChange={(e) => {
                   setCurrentSpecies(e.target.value);
                   setSpeciesClick(false);
-                }}
-              />
+                } } />
               <datalist id="species_list">
                 <select>
                   {naturalParkSpecies.map((species, index) => (
-                  <option key={index}>{species}</option>
+                    <option key={index}>{species}</option>
                   ))}
                 </select>
               </datalist>
@@ -916,15 +883,14 @@ export default function Form({ sample, isLocal, refresh}) {
               Ind <span className="text-red-700">*</span>
             </label>
             <div>
-              <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  id="ind"  defaultValue=""
+              <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="ind" defaultValue=""
                 {...register("ind", {
-                  validate: (value) =>
-                    (!value || value === "") && species.length !== 0,
+                  validate: (value) => (!value || value === "") && species.length !== 0,
                 })}
                 onChange={(e) => {
                   setCurrentInd(e.target.value);
                   setSpeciesClick(false);
-                }}
+                } }
               >
                 <option value="" disabled hidden />
                 <option value="+">+</option>
@@ -939,15 +905,13 @@ export default function Form({ sample, isLocal, refresh}) {
           <div className="md:w-1/6 px-3 md:mb-0">
             <button className="inline-flex items-center justify-center w-7 h-7 mt-8 text-white duration-150 bg-green-500 transition-colors ease-in-out hover:bg-green-700 rounded-full focus:shadow-outline disabled:opacity-30" type="button"
               onClick={() => {
-                Functions.addSpecies(currentSpecies, currentInd,species,setSpecies,setCurrentSpecies,setCurrentInd,setValue);
+                Functions.addSpecies(currentSpecies, currentInd, species, setSpecies, setCurrentSpecies, setCurrentInd, setValue);
                 setSpeciesClick(true);
-              }}
-              disabled={
-                !currentSpecies ||
+              } }
+              disabled={!currentSpecies ||
                 currentSpecies === "" ||
                 !currentInd ||
-                currentInd === ""
-              }
+                currentInd === ""}
             >
               <BiPlus />
             </button>
@@ -987,7 +951,7 @@ export default function Form({ sample, isLocal, refresh}) {
                   {oneSpecies.Name}, {oneSpecies.Ind}
                 </p>
                 <a className="flex-initial inline-flex items-center justify-center w-4 h-4 ml-2 mr-2 text-white transition-colors duration-150 rounded-full focus:shadow-outline"
-                  onClick={() => Functions.removeSpecies(oneSpecies,species,setSpecies)}>
+                  onClick={() => Functions.removeSpecies(oneSpecies, species, setSpecies)}>
                   <svg fill="#10B981" viewBox="0 0 24 24" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z" />
                   </svg>
@@ -1006,7 +970,7 @@ export default function Form({ sample, isLocal, refresh}) {
             Picture
           </label>
           <div className="grid justify-center">
-            <Dashboard className="max-w-4xl" uppy={uppy} hideUploadButton={true} height={300} width="100vw"/>
+            <Dashboard className="max-w-4xl" uppy={uppy} hideUploadButton={true} height={300} width="100vw" />
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -1022,7 +986,7 @@ export default function Form({ sample, isLocal, refresh}) {
             </a>
           </Link>
         </div>
-      </form>
+      </form></>
     );
   } else if (status === "loading") {
     return null;

@@ -28,6 +28,8 @@ export default function Details({ sample, isLocal }) {
   }, []);
 
   return (
+    <>
+    <title>Details</title>
     <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2 m-4 items-center max-w-6xl">
       <div className="max-w-sm min-h-full rounded shadow-lg">
         <div className="flex items-start">
@@ -315,6 +317,6 @@ export default function Details({ sample, isLocal }) {
           </div>
         )}
       </div>
-    </div>
+    </div></>
   );
 }

@@ -119,9 +119,9 @@ export default function Samples() {
             editDir = `/edit/remote/${id}`;
           }
           return (
+            <>
+            <title>Samples</title>
             <div className="flex gap-2">
-
-              
               <Link href={viewDir}>
                 <a className="inline-block bg-blue-200 transition-colors ease-in-out hover:bg-blue-400 font-medium px-2 py-0.5 rounded-full">
                   <svg
@@ -136,7 +136,7 @@ export default function Samples() {
                 </a>
               </Link>
 
-              {isLocal &&(  
+              {isLocal && (
                 <Link href={editDir}>
                   <a className="inline-block bg-yellow-200 transition-colors ease-in-out hover:bg-yellow-400 font-medium px-2 py-0.5 rounded-full">
                     <svg
@@ -182,7 +182,7 @@ export default function Samples() {
                   </svg>
                 </button>
               )}
-            </div>
+            </div></>
           );
         },
       },

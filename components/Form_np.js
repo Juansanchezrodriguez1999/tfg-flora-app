@@ -42,6 +42,7 @@ export default function Form({ sample, isLocal, refresh}) {
 
   if (status === "authenticated") {
     return (
+      <><title>Add natural site</title>
       <form className="max-w-4xl mt-4 mb-4 bg-white shadow-md rounded px-8 pt-6 pb-8 w-full"
         onSubmit={handleSubmit(submitForm)}
       >
@@ -51,31 +52,31 @@ export default function Form({ sample, isLocal, refresh}) {
           </label>
         </div>
         <div className="mb-4">
-            {!navigator.onLine &&
-                <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-yellow-200 rounded">
-                No connection, validation postponed to synchronization
-                </p>
+          {!navigator.onLine &&
+            <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-yellow-200 rounded">
+              No connection, validation postponed to synchronization
+            </p>}
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="natural_park">
+            Natural Site
+            <span className="text-red-700">*</span>
+          </label>
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" type="text"
+            {...register("natural_park", {
+              required: true, validate: {
+                local: (value) => !allNaturalParks.includes(value.toLowerCase()),
+                remote: (value) => !allNaturalParks.includes(value.toLowerCase())
+              }
             }
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="natural_park" >
-                Natural Site 
-                <span className="text-red-700">*</span>
-            </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="natural_park" type="text"
-                {...register("natural_park", { required: true, validate: {
-                    local: (value) => !allNaturalParks.includes(value.toLowerCase()), 
-                    remote: (value) => !allNaturalParks.includes(value.toLowerCase())
-                    }}
-                )}
-            />
-            {errors.natural_park?.type === "local" && (
-                <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                Natural Site is already associated with another natural site in the local database
-                </p>
-            )}
-            {errors.natural_park?.type === "remote" && (
-                <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                Natural Site is already associated with another natural site in the remote database
-                </p>
+            )} />
+          {errors.natural_park?.type === "local" && (
+            <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+              Natural Site is already associated with another natural site in the local database
+            </p>
+          )}
+          {errors.natural_park?.type === "remote" && (
+            <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+              Natural Site is already associated with another natural site in the remote database
+            </p>
           )}
         </div>
         <div className="flex items-center justify-between">
@@ -91,7 +92,7 @@ export default function Form({ sample, isLocal, refresh}) {
             </a>
           </Link>
         </div>
-      </form>
+      </form></>
     );
   } else if (status === "loading") {
     return null;

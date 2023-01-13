@@ -39,26 +39,17 @@ class MyDocument extends Document {
             sizes="167x167"
             href="/icons/touch-icon-ipad-retina.png"
           />
-
           <link
             rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/icons/favicon-32x32.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
+            type="image/x-icon"
             sizes="16x16"
-            href="/icons/favicon-16x16.png"
+            href="favicon.ico"
           />
-          <link rel="manifest" href="/services/flora/app/manifest.json" />
           <link
             rel="mask-icon"
             href="/icons/safari-pinned-tab.svg"
             color="#5bbad5"
           />
-          <link rel="shortcut icon" href="/favicon.ico" />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
