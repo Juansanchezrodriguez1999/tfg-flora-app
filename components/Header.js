@@ -8,6 +8,7 @@ export default function CustomHeader() {
     <div className="flex justify-between border-b-2 shadow items-center p-2 w-full">
       <link rel="icon" href="favicon.ico" type="image/x-icon" />
       <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+      <link rel="manifest" href="/manifest.json"/>
       <div>
         {status === "authenticated" && (
           <span>
@@ -15,12 +16,15 @@ export default function CustomHeader() {
           </span>
         )}
       </div>
-      <img
-        className="flex items-center justify-between center"
-        src="/services/flora/app/logo.png"
-        style={{ width: 200, height: 75.84 }}
-        alt="Logo"
-      />
+      <button>
+        <img
+          className="flex items-center justify-between center inline-block bg-white transition-colors ease-in-out hover:bg-green-100 font-medium px-2 py-0.5 rounded-full"
+          onClick={() => location.reload(false)}
+          src="/services/flora/app/logo.png"
+          style={{ width: 200, height: 75.84 }}
+          alt="Logo"
+        />
+      </button>
       <div className="flex items-center space-x-4">
         {status === "authenticated" && (
           <>

@@ -8,7 +8,12 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
     runtimeCaching,
+    register: true,
+    skipWaiting: true,
   },
+
+
+
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
