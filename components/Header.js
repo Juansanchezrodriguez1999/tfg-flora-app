@@ -9,27 +9,39 @@ export default function CustomHeader() {
       <link rel="icon" href="favicon.ico" type="image/x-icon" />
       <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
       <div>
-        {status==="authenticated" &&(
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        {status === "authenticated" && (
+          <span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span>
         )}
       </div>
-      <img className="flex items-center justify-between center" src = "/services/flora/app/logo.png" style={{ width: 200, height: 75.84 }} alt="Logo"/>
+      <img
+        className="flex items-center justify-between center"
+        src="/services/flora/app/logo.png"
+        style={{ width: 200, height: 75.84 }}
+        alt="Logo"
+      />
       <div className="flex items-center space-x-4">
-        {status==="authenticated" &&(
+        {status === "authenticated" && (
           <>
-          <button
-            className="bg-red-200 transition-colors ease-in-out hover:bg-red-400 py-2 px-2 rounded"
-            type="button"
-            onClick={() =>
-              signOut({ redirect: false, callbackUrl: "/signin" })
-            }
-          >
-            <div className="flex items-center justify-center space-x-2 font-bold">
-              <VscSignOut />
-              <span>Sign out</span>
-            </div>
-            <div> <span className="text-grey-500 bg-red-100 px-2 rounded ">{session.user.username}</span></div>
-          </button>
+            <button
+              className="bg-red-200 transition-colors ease-in-out hover:bg-red-400 py-2 px-2 rounded"
+              type="button"
+              onClick={() =>
+                signOut({ redirect: false, callbackUrl: "/signin" })
+              }
+            >
+              <div className="flex items-center justify-center space-x-2 font-bold">
+                <VscSignOut />
+                <span>Sign out</span>
+              </div>
+              <div>
+                {" "}
+                <span className="text-grey-500 bg-red-100 px-2 rounded ">
+                  {session.user.username}
+                </span>
+              </div>
+            </button>
           </>
         )}
       </div>

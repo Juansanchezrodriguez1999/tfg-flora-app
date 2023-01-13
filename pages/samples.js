@@ -15,8 +15,6 @@ import { Functions } from "../components/form-components/Functions";
 import { FloraSpecies } from "../lib/FloraSpecies";
 import { FloraAuthors } from "../lib/FloraAuthors";
 
-
-
 export default function Samples() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -42,14 +40,13 @@ export default function Samples() {
   };
 
   const clickUpdate = async () => {
-    if (navigator.onLine){
+    if (navigator.onLine) {
       const lastr = await Functions.updateTimesAfterUpdate();
-      setLastRefresh(lastr)
-      let refresh = "YES"
+      setLastRefresh(lastr);
+      let refresh = "YES";
       await FloraSpecies.getSpecies(refresh);
       FloraAuthors.getUsers(refresh);
-    }
-    else{
+    } else {
       setOfflineMessage(true);
     }
   };
@@ -69,8 +66,8 @@ export default function Samples() {
 
   const confirmRemove = () => {
     var ans = confirm("Are you sure to remove?");
-    if (ans===true) return true;
-    else return false
+    if (ans === true) return true;
+    else return false;
   };
 
   const columns = React.useMemo(
@@ -120,25 +117,10 @@ export default function Samples() {
           }
           return (
             <>
-            <title>Samples</title>
-            <div className="flex gap-2">
-              <Link href={viewDir}>
-                <a className="inline-block bg-blue-200 transition-colors ease-in-out hover:bg-blue-400 font-medium px-2 py-0.5 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="18"
-                    height="18"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M12 3c5.392 0 9.878 3.88 10.819 9-.94 5.12-5.427 9-10.819 9-5.392 0-9.878-3.88-10.819-9C2.121 6.88 6.608 3 12 3zm0 16a9.005 9.005 0 0 0 8.777-7 9.005 9.005 0 0 0-17.554 0A9.005 9.005 0 0 0 12 19zm0-2.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-2a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
-                  </svg>
-                </a>
-              </Link>
-
-              {isLocal && (
-                <Link href={editDir}>
-                  <a className="inline-block bg-yellow-200 transition-colors ease-in-out hover:bg-yellow-400 font-medium px-2 py-0.5 rounded-full">
+              <title>Samples</title>
+              <div className="flex gap-2">
+                <Link href={viewDir}>
+                  <a className="inline-block bg-blue-200 transition-colors ease-in-out hover:bg-blue-400 font-medium px-2 py-0.5 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -146,30 +128,30 @@ export default function Samples() {
                       height="18"
                     >
                       <path fill="none" d="M0 0h24v24H0z" />
-                      <path d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z" />
+                      <path d="M12 3c5.392 0 9.878 3.88 10.819 9-.94 5.12-5.427 9-10.819 9-5.392 0-9.878-3.88-10.819-9C2.121 6.88 6.608 3 12 3zm0 16a9.005 9.005 0 0 0 8.777-7 9.005 9.005 0 0 0-17.554 0A9.005 9.005 0 0 0 12 19zm0-2.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-2a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
                     </svg>
                   </a>
                 </Link>
-              )}
 
-              <button
-                className="inline-block bg-red-200 transition-colors ease-in-out hover:bg-red-400 font-medium px-2 py-0.5 rounded-full"
-                onClick={() => removeSample(row.original, isLocal)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z" />
-                </svg>
-              </button>
-              {isLocal && navigator.onLine && (
+                {isLocal && (
+                  <Link href={editDir}>
+                    <a className="inline-block bg-yellow-200 transition-colors ease-in-out hover:bg-yellow-400 font-medium px-2 py-0.5 rounded-full">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                      >
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z" />
+                      </svg>
+                    </a>
+                  </Link>
+                )}
+
                 <button
-                  className="inline-block bg-purple-200 transition-colors ease-in-out hover:bg-purple-400 font-medium px-2 py-0.5 rounded-full"
-                  onClick={() => submitSync(row.original)}
+                  className="inline-block bg-red-200 transition-colors ease-in-out hover:bg-red-400 font-medium px-2 py-0.5 rounded-full"
+                  onClick={() => removeSample(row.original, isLocal)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -178,11 +160,27 @@ export default function Samples() {
                     height="18"
                   >
                     <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z" />
+                    <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z" />
                   </svg>
                 </button>
-              )}
-            </div></>
+                {isLocal && navigator.onLine && (
+                  <button
+                    className="inline-block bg-purple-200 transition-colors ease-in-out hover:bg-purple-400 font-medium px-2 py-0.5 rounded-full"
+                    onClick={() => submitSync(row.original)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z" />
+                      <path d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </>
           );
         },
       },
@@ -217,20 +215,14 @@ export default function Samples() {
     );
   };
 
-  useEffect(async() => {
+  useEffect(async () => {
     const prueba = await Time.getAllTime();
-    if(prueba.length>0){
-      setLastRefresh(prueba[0].strDate.toString())
+    if (prueba.length > 0) {
+      setLastRefresh(prueba[0].strDate.toString());
+    } else {
+      setLastRefresh("undefined");
     }
-    else{
-      setLastRefresh("undefined")
-      
-    }
-    
   }, []);
-
-
-
 
   useEffect(() => {
     if (!navigator.onLine) {
@@ -278,7 +270,7 @@ export default function Samples() {
           setDropLocalSuccess(true);
         })
         .catch((e) => console.error(e));
-    } else if (confirm){
+    } else if (confirm) {
       FloraSamples.removeRemoteSample(doc)
         .then(() => {
           updateRemoteTable();
@@ -302,7 +294,8 @@ export default function Samples() {
       .catch((e) => {
         setSyncError(e.message);
         setSyncSuccess(false);
-      }).then(() => {
+      })
+      .then(() => {
         updateRemoteTable();
         updateLocalTable();
       });
@@ -358,10 +351,7 @@ export default function Samples() {
             {syncError && (
               <div>
                 {" "}
-                {setBoxMessage(
-                  "Error",
-                  `${syncError}`
-                )}{" "}
+                {setBoxMessage("Error", `${syncError}`)}{" "}
                 {setBoxMessage(
                   "Message",
                   "Don't worry, your data is still stored in the local database."
@@ -465,46 +455,46 @@ export default function Samples() {
             </div>
           )}
         </div>
-        
-        <div className="flex gap-2 mb-2">
-              {lastRefresh !== "undefined" && (
-                  <div className="flex items-center justify-center space-x-2 mr-2">
-                    Local database update: &nbsp;  
-                    {lastRefresh}
-                  </div>
-                )}
-                {lastRefresh == "undefined" && (
-                  <div className="flex items-center justify-center space-x-2 mr-2">
-                    The local database has never been updated
-                  </div>
-                )}
-              { navigator.onLine && (
-              <button
-                        className=""
-                        type="button"
-                        onClick={async() =>{clickUpdate().then(() => {
-                          router.push({
-                            pathname: "/samples",
-                          });
-                        })
-                        .catch((e) => {
-                          router.push({
-                            pathname: "/samples",
-                            query: { success: false, code: e.message },
-                          });
-                        }); }
-                                }      
-                      >
-                        <div className="flex items-center justify-center space-x-2 font-bold text-green-500 hover:text-green-800">
-                        <GrUpdate className/> <span> Update local database</span>
-                        </div>
-              </button>
-              )}
 
+        <div className="flex gap-2 mb-2">
+          {lastRefresh !== "undefined" && (
+            <div className="flex items-center justify-center space-x-2 mr-2">
+              Local database update: &nbsp;
+              {lastRefresh}
+            </div>
+          )}
+          {lastRefresh == "undefined" && (
+            <div className="flex items-center justify-center space-x-2 mr-2">
+              The local database has never been updated
+            </div>
+          )}
+          {navigator.onLine && (
+            <button
+              className=""
+              type="button"
+              onClick={async () => {
+                clickUpdate()
+                  .then(() => {
+                    router.push({
+                      pathname: "/samples",
+                    });
+                  })
+                  .catch((e) => {
+                    router.push({
+                      pathname: "/samples",
+                      query: { success: false, code: e.message },
+                    });
+                  });
+              }}
+            >
+              <div className="flex items-center justify-center space-x-2 font-bold text-green-500 hover:text-green-800">
+                <GrUpdate className /> <span> Update local database</span>
+              </div>
+            </button>
+          )}
         </div>
         <Footer />
       </div>
-      
     );
   } else if (status === "loading") {
     return null;

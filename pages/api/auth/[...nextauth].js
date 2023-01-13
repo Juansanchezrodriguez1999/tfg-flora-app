@@ -17,17 +17,17 @@ export default NextAuth({
         // Search for a user with the username specified in the form who belongs to one of the valid groups.
         const userOnGroup = await prisma.usersOnResearchGroup.findFirst({
           where: {
-            user: {username: credentials.username},
-            researchGroup: {name: { in: ["FLORA", "KHAOS"]}}
+            user: { username: credentials.username },
+            researchGroup: { name: { in: ["FLORA", "KHAOS"] } },
           },
           select: {
             user: true,
             researchGroup: true,
-          }
+          },
         });
-        if (!userOnGroup) return null
-        const user = userOnGroup.user
-        const group = userOnGroup.researchGroup
+        if (!userOnGroup) return null;
+        const user = userOnGroup.user;
+        const group = userOnGroup.researchGroup;
 
         // Validate password
         const validPassword = await bcrypt.compare(
@@ -39,7 +39,7 @@ export default NextAuth({
 
         // If the password is valid and all the above conditions have been met, the user is returned.
         return validPassword ? user : null;
-      }
+      },
     }),
   ],
   events: {

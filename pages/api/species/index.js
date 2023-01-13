@@ -14,12 +14,7 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
       /* GET ALL */
       const doc_species = await await connect().then((collection) =>
-        collection
-          .find(
-            {},
-            { projection: { _id: 1,Species:1 } }
-          )
-          .toArray()
+        collection.find({}, { projection: { _id: 1, Species: 1 } }).toArray()
       );
       res.status(200).json({
         body: JSON.stringify(doc_species),

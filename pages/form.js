@@ -6,19 +6,18 @@ import { useRouter } from "next/router";
 import Form from "/components/Form";
 import { Functions } from "../components/form-components/Functions";
 
-
 export default function FormPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [refresh, setRefresh] = useState();
 
   useEffect(async () => {
-    let refreshYesNo=null;
-    await Functions.getRefreshLocalDatabase().then(valor=>{
-      refreshYesNo=valor
+    let refreshYesNo = null;
+    await Functions.getRefreshLocalDatabase().then((valor) => {
+      refreshYesNo = valor;
     });
 
-    setRefresh(refreshYesNo.toString())
+    setRefresh(refreshYesNo.toString());
   }, []);
 
   if (status === "authenticated") {

@@ -18,6 +18,6 @@ module.exports = withPWA({
     MINIO_BUCKET: process.env.MINIO_BUCKET,
     MINIO_ACCESS_KEY: process.env.MINIO_ACCESS_KEY,
     MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY,
-    MONGO_URI: process.env.MONGO_URI
-  }
+    MONGO_URI: process.env.MONGO_URI,
+  },
 });

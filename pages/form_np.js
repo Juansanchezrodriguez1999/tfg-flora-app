@@ -6,26 +6,25 @@ import { useRouter } from "next/router";
 import Form_np from "/components/Form_np";
 import { Functions } from "../components/form-components/Functions";
 
-
 export default function FormPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [refresh, setRefresh] = useState();
 
   useEffect(async () => {
-    let refreshYesNo=null;
-    await Functions.getRefreshLocalDatabase().then(valor=>{
-      refreshYesNo=valor
+    let refreshYesNo = null;
+    await Functions.getRefreshLocalDatabase().then((valor) => {
+      refreshYesNo = valor;
     });
- 
-    setRefresh(refreshYesNo.toString())
+
+    setRefresh(refreshYesNo.toString());
   }, []);
 
   if (status === "authenticated") {
     return (
       <div className="mx-auto grid place-items-center">
         <Header />
-        <Form_np refresh={refresh}/>
+        <Form_np refresh={refresh} />
         <Footer />
       </div>
     );

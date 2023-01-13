@@ -3,7 +3,8 @@
 Flora explorer is a PWA designed for flora data collection.
 
 ## Installation
-First complete environmet variables in a .env 
+
+First complete environmet variables in a .env
 
 ```sh
 pnpm i
@@ -37,5 +38,5 @@ docker build -t app_flora_frontend:1.0.0 .
 ## Run
 
 ```
-docker run -p 3050:3050 -d app_flora_frontend:1.0.0 
+docker run -p 3050:3050 -d app_flora_frontend:1.0.0
 ```
