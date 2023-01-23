@@ -12,12 +12,12 @@ export default function FormPage() {
   const [refresh, setRefresh] = useState();
 
   useEffect(async () => {
-    let refreshYesNo = null;
+    let refreshYesNo = false;
     await Functions.getRefreshLocalDatabase().then((valor) => {
       refreshYesNo = valor;
     });
 
-    setRefresh(refreshYesNo.toString());
+    setRefresh(refreshYesNo);
   }, []);
 
   if (status === "authenticated") {

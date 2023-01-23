@@ -43,7 +43,7 @@ export default function Samples() {
     if (navigator.onLine) {
       const lastr = await Functions.updateTimesAfterUpdate();
       setLastRefresh(lastr);
-      let refresh = "YES";
+      let refresh = true;
       await FloraSpecies.getSpecies(refresh);
       FloraAuthors.getUsers(refresh);
     } else {

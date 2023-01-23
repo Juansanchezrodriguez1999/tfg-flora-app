@@ -244,16 +244,16 @@ const Functions = {
           10
         ) {
           Time.removeTime(timesCompare[timesCompare.length - 2]);
-          var update = "YES";
+          var update = true;
         } else {
           Time.removeTime(timesCompare[timesCompare.length - 1]);
-          var update = "NO";
+          var update = false;
         }
       } else {
-        var update = "YES";
+        var update = true;
       }
     } else {
-      var update = "NO";
+      var update = false;
     }
 
     return update;
