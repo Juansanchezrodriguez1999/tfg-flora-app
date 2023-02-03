@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "/components/Header";
 import Footer from "/components/Footer";
 import { useRouter } from "next/router";
-import Form from "/components/Form";
+import Form_np from "/components/Form_np";
 import { Functions } from "../components/form-components/Functions";
 
 export default function FormPage() {
@@ -24,7 +24,7 @@ export default function FormPage() {
     return (
       <div className="mx-auto grid place-items-center">
         <Header />
-        <Form refresh={refresh} />
+        <Form_np refresh={refresh} />
         <Footer />
       </div>
     );

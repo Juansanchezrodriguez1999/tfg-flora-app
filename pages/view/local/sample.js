@@ -16,7 +16,7 @@ const ViewLocal = () => {
   useEffect(async () => {
     const doc = await FloraSamples.getLocalSample(id);
     delete doc.id;
-    doc.Date = doc.Date.toString();
+    doc.created_at = doc.created_at.toString();
     setSample(doc);
   }, []);
 

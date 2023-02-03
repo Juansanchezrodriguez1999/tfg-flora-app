@@ -1,26 +1,53 @@
-import Mgrs, {LatLon} from "geodesy/mgrs.js";
+import Mgrs, { LatLon } from "geodesy/mgrs.js";
 import { FloraSamples } from "../../lib/FloraSamples";
 import { FloraAuthors } from "../../lib/FloraAuthors";
 import { FloraSpecies } from "../../lib/FloraSpecies";
+import { Time } from "../../lib/Time";
 
 const Functions = {
   //No Register and useEffect
   getRemoteRegisNumbers: async (setRemoteRegisNumbers) => {
-    const remoteRNs = await FloraSamples.getAllRemoteRegisNumber();
-    setRemoteRegisNumbers(remoteRNs);
+    if (navigator.onLine) {
+      const remoteRNs = await FloraSamples.getAllRemoteRegisNumber();
+      const remoteRNsLower = remoteRNs.map(function (rns) {
+        return rns.toLowerCase();
+      });
+      setRemoteRegisNumbers(remoteRNsLower);
+    }
   },
-  getLocalRegisNumbers: async (setLocalRegisNumbers,isLocal,sample) => {
+  getLocalRegisNumbers: async (setLocalRegisNumbers, isLocal, sample) => {
     if (!isLocal) {
-        const localRNs = await FloraSamples.getAllLocalRegisNumber();
-        setLocalRegisNumbers(localRNs);
+      const localRNs = await FloraSamples.getAllLocalRegisNumber();
+      const localRNsLower = localRNs.map(function (rns) {
+        return rns.toLowerCase();
+      });
+      if (sample !== undefined) {
+        const sampleIdLower = sample._id.toLowerCase();
+        const RNsFilt = localRNsLower.filter(function (item) {
+          return item !== sampleIdLower;
+        });
+        setLocalRegisNumbers(RNsFilt);
+      } else {
+        setLocalRegisNumbers(localRNsLower);
+      }
     } else {
-        const localRNs = await FloraSamples.getAllLocalRegisNumber()
-        const localRNs_Filtered = localRNs.filter(item => item != sample._id)
-      setLocalRegisNumbers(localRNs_Filtered);
+      const localRNs = await FloraSamples.getAllLocalRegisNumber();
+      const localRNsLower = localRNs.map(function (rns) {
+        return rns.toLowerCase();
+      });
+      if (sample !== undefined) {
+        const sampleIdLower = sample._id.toLowerCase();
+        const RNsFilt = localRNsLower.filter(function (item) {
+          return item !== sampleIdLower;
+        });
+        setLocalRegisNumbers(RNsFilt);
+      } else {
+        setLocalRegisNumbers(localRNsLower);
+      }
     }
   },
   //Author
-  addAuthor (currentAuthor,authors,setAuthors,setCurrentAuthor,setValue) {
+  addAuthor(currentAuthor, authors, setAuthors, setCurrentAuthor, setValue) {
     if (
       currentAuthor &&
       currentAuthor !== "" &&
@@ -31,49 +58,58 @@ const Functions = {
       setValue("author_name", "");
     }
   },
-  removeAuthor (author,Authors,setAuthors) {
-    const items =Authors.filter((value) => value !== author);
+  removeAuthor(author, Authors, setAuthors) {
+    const items = Authors.filter((value) => value !== author);
 
     setAuthors(items);
   },
+  getNaturalPark: async (refresh, setAllNaturalParks) => {
+    const registered_species = await FloraSpecies.getSpecies(refresh);
+    const allNaturalParks = registered_species.map((doc) => doc._id);
+    const allNaturalParksLowe = allNaturalParks.map(function (naturalPark) {
+      return naturalPark.toLowerCase();
+    });
+    setAllNaturalParks(allNaturalParksLowe);
+  },
   //Natural Park
-  getSpecies: async (np,allSpecies,setNaturalParkSpecies ) => {
-    if (allSpecies.map((d) => d.Natural_Park).includes(np)) {
-      const np_doc = allSpecies.find((d) => d.Natural_Park === np);
-      const np_species = np_doc.Species.map((s) => s.Taxon);
-      setNaturalParkSpecies(np_species);
+  getSpecies: async (np, allSpecies, setNaturalParkSpecies) => {
+    if (allSpecies.map((d) => d._id).includes(np)) {
+      const np_doc = allSpecies.find((d) => d._id === np);
+      const np_species = np_doc.Species.map((s) => s);
+      const unique_np_species = [...new Set(np_species)];
+      setNaturalParkSpecies(unique_np_species);
     } else {
       setNaturalParkSpecies([]);
     }
   },
   //Georeferencing
-  getCoordinates (mode,setUTM,setLatitude,setLongitude,setValue) {
+  getCoordinates(mode, setUTM, setLatitude, setLongitude, setValue) {
     navigator.geolocation.getCurrentPosition(function (position) {
-        var lat = position.coords.latitude.toFixed(7);
-        var lon = position.coords.longitude.toFixed(7);
-        if (mode === "utm") {
-            var utmf = Functions.getUTMFromCoordinates(lat, lon);
-            setUTM(utmf);
-            setValue("utm", utmf);
-        } else if (mode === "latlon") {
-            setLatitude(lat);
-            setLongitude(lon);
-            setValue("latitude", lat);
-            setValue("longitude", lon);
-        }
-    })
+      var lat = position.coords.latitude.toFixed(7);
+      var lon = position.coords.longitude.toFixed(7);
+      if (mode === "utm") {
+        var utmf = Functions.getUTMFromCoordinates(lat, lon);
+        setUTM(utmf);
+        setValue("utm", utmf);
+      } else if (mode === "latlon") {
+        setLatitude(lat);
+        setLongitude(lon);
+        setValue("latitude", lat);
+        setValue("longitude", lon);
+      }
+    });
   },
-  getUTMFromCoordinates (lat, lon) {
+  getUTMFromCoordinates(lat, lon) {
     var latlon = new LatLon(lat, lon);
     var utm = latlon.toUtm().toMgrs().toString(4);
     return utm;
   },
-  getCoordinatesFromUTM (utm) {
-    var mgrs = Mgrs.parse(utm)
+  getCoordinatesFromUTM(utm) {
+    var mgrs = Mgrs.parse(utm);
     var latlon = mgrs.toUtm().toLatLon();
-    return [latlon.latitude, latlon.longitude]
+    return [latlon.latitude, latlon.longitude];
   },
-  validateUTM (value) {
+  validateUTM(value) {
     if (!value || value === "") return true;
 
     var vector = value.split(" ");
@@ -90,7 +126,13 @@ const Functions = {
     return true;
   },
   //Community Authors
-  addCommunityAuthor (currentCommunityAuthor,communityAuthors,setCommunityAuthors,setCurrentCommunityAuthor,setValue) {
+  addCommunityAuthor(
+    currentCommunityAuthor,
+    communityAuthors,
+    setCommunityAuthors,
+    setCurrentCommunityAuthor,
+    setValue
+  ) {
     if (
       currentCommunityAuthor &&
       currentCommunityAuthor !== "" &&
@@ -101,12 +143,18 @@ const Functions = {
       setValue("community_author_name", "");
     }
   },
-  removeCommunityAuthor (c_author,communityAuthors,setCommunityAuthors) {
+  removeCommunityAuthor(c_author, communityAuthors, setCommunityAuthors) {
     const items = communityAuthors.filter((value) => value !== c_author);
     setCommunityAuthors(items);
   },
   //Subcommunity Authors
-  addSubcommunityAuthor(currentSubcommunityAuthor,subcommunityAuthors,setSubcommunityAuthors,setCurrentSubcommunityAuthor,setValue) {
+  addSubcommunityAuthor(
+    currentSubcommunityAuthor,
+    subcommunityAuthors,
+    setSubcommunityAuthors,
+    setCurrentSubcommunityAuthor,
+    setValue
+  ) {
     if (
       currentSubcommunityAuthor &&
       currentSubcommunityAuthor !== "" &&
@@ -120,43 +168,95 @@ const Functions = {
       setValue("subcommunity_author_name", "");
     }
   },
-  removeSubcommunityAuthor (sa_author,subcommunityAuthors,setSubcommunityAuthors) {
+  removeSubcommunityAuthor(
+    sa_author,
+    subcommunityAuthors,
+    setSubcommunityAuthors
+  ) {
     const items = subcommunityAuthors.filter((value) => value !== sa_author);
     setSubcommunityAuthors(items);
   },
   //Species
-  addSpecies(currentSpecies,currentInd,species,setSpecies,setCurrentSpecies,setCurrentInd,setValue) {
+  addSpecies(
+    currentSpecies,
+    currentInd,
+    species,
+    setSpecies,
+    setCurrentSpecies,
+    setCurrentInd,
+    setValue
+  ) {
     if (
-        currentSpecies &&
-        currentInd &&
-        currentSpecies !== "" &&
-        currentInd !== "" &&
-        species.findIndex(
+      currentSpecies &&
+      currentInd &&
+      currentSpecies !== "" &&
+      currentInd !== "" &&
+      species.findIndex(
         (i) => i.Name === currentSpecies && i.Ind === currentInd
-        ) == -1
+      ) == -1
     ) {
-        setSpecies([...species, { Name: currentSpecies, Ind: currentInd }]);
-        setCurrentSpecies("");
-        setCurrentInd("");
-        setValue("species_name", "");
-        setValue("ind", "");
+      setSpecies([...species, { Name: currentSpecies, Ind: currentInd }]);
+      setCurrentSpecies("");
+      setCurrentInd("");
+      setValue("species_name", "");
+      setValue("ind", "");
     }
   },
-  removeSpecies (oneSpecies,species,setSpecies) {
+  removeSpecies(oneSpecies, species, setSpecies) {
     const items = species.filter(
       (value) => value.Name !== oneSpecies.Name || value.Ind !== oneSpecies.Ind
     );
     setSpecies(items);
   },
   //useEffect
-  getAllSpecies: async (setAllSpecies) => {
-    const registered_species = await FloraSpecies.getSpecies();
+  getAllSpecies: async (setAllSpecies, refresh) => {
+    const registered_species = await FloraSpecies.getSpecies(refresh);
     setAllSpecies(registered_species);
   },
-  getAuthors: async (setStaticAuthors,setUsernames) => {
-    const registered_authors = await FloraAuthors.getUsers();
+  getAuthors: async (setStaticAuthors, setUsernames, refresh) => {
+    const registered_authors = await FloraAuthors.getUsers(refresh);
     setStaticAuthors(registered_authors);
     setUsernames(registered_authors.map((d) => d.username));
   },
-}
-export {Functions};
+  updateTimesAfterUpdate: async () => {
+    Time.insertTime();
+    const allTimesArray = await Time.getAllTime();
+    const timesCompare = allTimesArray.map((doc) => doc.id);
+    if (timesCompare.length > 1 && navigator.onLine) {
+      Time.removeTime(timesCompare[timesCompare.length - 2]);
+    } else if (timesCompare.length > 1 && !navigator.onLine) {
+      Time.removeTime(timesCompare[timesCompare.length - 1]);
+    } else {
+    }
+    const newTime = await Time.getAllTime();
+    const updateTime = await newTime[0].strDate.toString();
+    return updateTime;
+  },
+  getRefreshLocalDatabase: async () => {
+    if (navigator.onLine) {
+      Time.insertTime();
+      const allTimesArray = await Time.getAllTime();
+      const timesCompare = allTimesArray.map((doc) => doc.id);
+      if (timesCompare.length > 1) {
+        if (
+          timesCompare[timesCompare.length - 1] -
+            timesCompare[timesCompare.length - 2] >
+          10
+        ) {
+          Time.removeTime(timesCompare[timesCompare.length - 2]);
+          var update = true;
+        } else {
+          Time.removeTime(timesCompare[timesCompare.length - 1]);
+          var update = false;
+        }
+      } else {
+        var update = true;
+      }
+    } else {
+      var update = false;
+    }
+
+    return update;
+  },
+};
+export { Functions };

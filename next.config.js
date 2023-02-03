@@ -8,7 +8,12 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
     runtimeCaching,
+    register: true,
+    skipWaiting: true,
   },
+
+
+
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -18,6 +23,6 @@ module.exports = withPWA({
     MINIO_BUCKET: process.env.MINIO_BUCKET,
     MINIO_ACCESS_KEY: process.env.MINIO_ACCESS_KEY,
     MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY,
-    MONGO_URI: process.env.MONGO_URI
-  }
+    MONGO_URI: process.env.MONGO_URI,
+  },
 });

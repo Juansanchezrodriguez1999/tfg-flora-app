@@ -6,19 +6,22 @@ export default async function handler(req, res) {
       /* GET ALL */
       const doc_authors = await prisma.usersOnResearchGroup.findMany({
         where: {
-          researchGroup: {name: "FLORA"},
+          researchGroup: { name: "FLORA" },
         },
         select: {
           user: {
             select: {
-              id: false, 
-              username: true, 
+              id: false,
+              username: true,
               fullname: true,
-            }
-          }
+            },
+          },
         },
       });
-      const result = doc_authors.map((doc) => ({username: doc.user.username, fullname: doc.user.fullname}));
+      const result = doc_authors.map((doc) => ({
+        username: doc.user.username,
+        fullname: doc.user.fullname,
+      }));
       res.status(200).json({
         body: JSON.stringify(result),
       });
