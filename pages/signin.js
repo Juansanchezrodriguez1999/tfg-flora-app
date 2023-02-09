@@ -116,7 +116,7 @@ export default function SignnIn() {
                   >
                     Sign In
                   </button>
-                  <Link href="https://enbic2lab.uma.es/auth/signUp">
+                  <Link href="https://enbic2lab.uma.es/auth/signup">
                     <a className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800">
                       Create new account
                     </a>
