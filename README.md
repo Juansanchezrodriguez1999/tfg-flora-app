@@ -32,11 +32,11 @@ pnpm start
 ## Build
 
 ```
-docker build -t app_flora_frontend:1.0.0 .
+docker build -t app_flora_frontend:1.0.1 .
 ```
 
 ## Run
 
 ```
-docker run -p 3050:3050 -d app_flora_frontend:1.0.0
+docker run -p 3050:3050 -d app_flora_frontend:1.0.1
 ```
