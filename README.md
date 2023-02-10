@@ -38,5 +38,5 @@ docker build -t app_flora_frontend:1.0.1 .
 ## Run
 
 ```
-docker run -p 3050:3050 -d app_flora_frontend:1.0.1
+docker run -p 4000:4000 -d app_flora_frontend:1.0.1 --env-file ./env
 ```
