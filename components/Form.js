@@ -49,14 +49,13 @@ export default function Form({ sample, isLocal, refresh }) {
   const [communityAuthorClick, setCommunityAuthorClick] = useState(false);
   const [localRegisNumbers, setLocalRegisNumbers] = useState([]);
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
-  const uppy = useUppy(() => {
-    return new Uppy({
+  const uppy = 
+    new Uppy({
       autoProceed: false,
       restrictions: {
         allowedFileTypes: ["image/*"],
       },
     });
-  });
 
   useEffect(() => {
     Functions.getAuthors(setStaticAuthors, setUsernames, refresh);
@@ -1324,20 +1323,20 @@ export default function Form({ sample, isLocal, refresh }) {
               Upload picture
             </label>
           </div>
+          {navigator.onLine &&
+            <div className="text-gray-700 text-sm font-medium font-bold bg-red-200 rounded-lg p-2 mb-4 grid place-items-center">        
+              No connection, uploading images from the camera does not work
+            </div>
+          }
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="picture"
-            >
-              Picture
-            </label>
             <div className="grid justify-center">
               <Dashboard
                 className="max-w-4xl"
                 uppy={uppy}
-                hideUploadButton={true}
+                hideUploadButton={false}
                 height={300}
                 width="100vw"
+                
               />
             </div>
           </div>
