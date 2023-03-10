@@ -1323,7 +1323,7 @@ export default function Form({ sample, isLocal, refresh }) {
               Upload picture
             </label>
           </div>
-          {navigator.onLine &&
+          {!navigator.onLine &&
             <div className="text-gray-700 text-sm font-medium font-bold bg-red-200 rounded-lg p-2 mb-4 grid place-items-center">        
               No connection, uploading images from the camera does not work
             </div>
@@ -1333,7 +1333,7 @@ export default function Form({ sample, isLocal, refresh }) {
               <Dashboard
                 className="max-w-4xl"
                 uppy={uppy}
-                hideUploadButton={false}
+                hideUploadButton={true}
                 height={300}
                 width="100vw"
                 
