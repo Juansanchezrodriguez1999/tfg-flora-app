@@ -6,9 +6,8 @@ export default function CustomHeader() {
 
   return (
     <div className="flex justify-between border-b-2 shadow items-center p-2 w-full">
-      <link rel="icon" href="favicon.ico" type="image/x-icon" />
-      <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-      <link rel="manifest" href="/manifest.json"/>
+      <link rel="icon" href="/services/flora/app/favicon.ico" type="image/x-icon" />
+      <link rel="shortcut icon" href="/services/flora/app/favicon.ico" type="image/x-icon" />
       <div>
         {status === "authenticated" && (
           <span>
