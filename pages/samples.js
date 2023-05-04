@@ -9,6 +9,8 @@ import Table, {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FloraSamples } from "/lib/FloraSamples";
+import { FloraCommunity } from "../lib/FloraCommunity";
+import { FloraSubcommunity } from "../lib/FloraSubCommunity";
 import { GrAddCircle, GrUpdate } from "react-icons/gr";
 import { Time } from "../lib/Time";
 import { Functions } from "../components/form-components/Functions";
@@ -45,12 +47,14 @@ export default function Samples() {
       setLastRefresh(lastr);
       let refresh = true;
       await FloraSpecies.getSpecies(refresh);
+      await FloraCommunity.getCommunities(refresh);
+      await FloraSubcommunity.getSubcommunities(refresh);
+      
       FloraAuthors.getUsers(refresh);
     } else {
       setOfflineMessage(true);
     }
   };
-
   const preprocessSamples = (docs) => {
     const res = docs.map((doc) => {
       const date = new Date(doc.created_at);
