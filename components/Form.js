@@ -32,6 +32,8 @@ export default function Form({ sample, isLocal, refresh }) {
   const [currentAuthor, setCurrentAuthor] = useState();
   const [species, setSpecies] = useState([]);
   const [currentSpecies, setCurrentSpecies] = useState();
+  const [currentCommunityName, setCurrentCommunityName] = useState();
+  const [currentSubCommunityName, setCurrentSubCommunityName] = useState();
   const [currentInd, setCurrentInd] = useState();
   const [authorClick, setAuthorClick] = useState(false);
   const [speciesClick, setSpeciesClick] = useState(false);
@@ -42,13 +44,18 @@ export default function Form({ sample, isLocal, refresh }) {
   const [staticAuthors, setStaticAuthors] = useState([]);
   const [usernames, setUsernames] = useState([]);
   const [allSpecies, setAllSpecies] = useState([]);
+  const [allCommunities, setAllCommunities] = useState([]);
+  const [allSubcommunities, setAllSubcommunities] = useState([]);
   const [naturalParkSpecies, setNaturalParkSpecies] = useState([]);
+  const [naturalParkCommunities, setNaturalParkCommunities] = useState([]);
+  const [naturalParkSubcommunities, setNaturalParkSubcommunities] = useState([]);
   const [thereIsCommunity, setThereIsCommunity] = useState(false);
   const [communityAuthors, setCommunityAuthors] = useState([]);
   const [currentCommunityAuthor, setCurrentCommunityAuthor] = useState();
   const [communityAuthorClick, setCommunityAuthorClick] = useState(false);
   const [localRegisNumbers, setLocalRegisNumbers] = useState([]);
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
+  
   const uppy = 
     new Uppy({
       autoProceed: false,
@@ -61,6 +68,8 @@ export default function Form({ sample, isLocal, refresh }) {
     Functions.getAuthors(setStaticAuthors, setUsernames, refresh);
     setIsGeolocationAvailable("geolocation" in navigator);
     Functions.getAllSpecies(setAllSpecies, refresh);
+    Functions.getAllCommunities(setAllCommunities, refresh);
+    Functions.getAllSubcommunities(setAllSubcommunities, refresh);
     Functions.getLocalRegisNumbers(setLocalRegisNumbers, isLocal, sample);
     Functions.getRemoteRegisNumbers(setRemoteRegisNumbers);
     if (sample) {
@@ -89,11 +98,11 @@ export default function Form({ sample, isLocal, refresh }) {
       setValue("plotorientation", sample.Plot_Orientation);
       setValue("ecology", sample.Ecology);
       if (sample.Community) setThereIsCommunity(true);
-      setValue("community", sample.Community);
+      setValue("communities_name", sample.Community);
       setValue("community_year", sample.Community_Year);
       setCommunityAuthors(sample.Community_Authors);
       if (sample.Subcommunity) setThereIsSubcommunity(true);
-      setValue("subcommunity", sample.Subcommunity);
+      setValue("sub_communities_name", sample.Subcommunity);
       setValue("subcommunity_year", sample.Subcommunity_Year);
       setSubcommunityAuthors(sample.Subcommunity_Authors);
       setSpecies(sample.Species);
@@ -135,10 +144,10 @@ export default function Form({ sample, isLocal, refresh }) {
           mode === "latlon"
             ? [latitude, longitude]
             : Functions.getCoordinatesFromUTM(data.utm);
-        const final_c_name = thereIsCommunity ? data.community : "";
+        const final_c_name = thereIsCommunity ? data.communities_name : "";
         const final_c_authors = thereIsCommunity ? communityAuthors : [];
         const final_c_year = thereIsCommunity ? data.community_year : "";
-        const final_subc_name = thereIsSubcommunity ? data.subcommunity : "";
+        const final_subc_name = thereIsSubcommunity ? data.sub_communities_name : "";
         const final_subc_authors = thereIsSubcommunity
           ? subcommunityAuthors
           : [];
@@ -440,12 +449,22 @@ export default function Form({ sample, isLocal, refresh }) {
               defaultValue=""
               {...register("natural_park")}
               onChange={(e) =>
-                Functions.getSpecies(
+                {Functions.getSpecies(
                   e.target.value,
                   allSpecies,
                   setNaturalParkSpecies
+                ),
+                Functions.getCommunities(
+                  e.target.value,
+                  allCommunities,
+                  setNaturalParkCommunities
+                ),
+                Functions.getSubCommunities(
+                  e.target.value,
+                  allSubcommunities,
+                  setNaturalParkSubcommunities
                 )
-              }
+              }}
             >
               <option value="" disabled hidden />
               {allSpecies.map((np_doc, index) => (
@@ -846,13 +865,26 @@ export default function Form({ sample, isLocal, refresh }) {
                 >
                   Community name <span className="text-red-700">*</span>
                 </label>
+                <div>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="community"
+                  id="communities_name"
                   type="text"
-                  {...register("community", { required: thereIsCommunity })}
+                  list="communities_list"
+                  {...register("communities_name", {
+                    required:true,
+                  })}
+
                 />
-                {errors.community?.type === "required" && (
+                <datalist id="communities_list">
+                  <select>
+                    {naturalParkCommunities.map((communities, index) => (
+                      <option key={index}>{communities}</option>
+                    ))}
+                  </select>
+                </datalist>
+              </div>
+                {errors.communities_name?.type === "required" && (
                   <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                     Community name is required
                   </p>
@@ -1034,15 +1066,26 @@ export default function Form({ sample, isLocal, refresh }) {
                 >
                   Sub-community name <span className="text-red-700">*</span>
                 </label>
+                <div>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="subcommunity"
+                  id="sub_communities_name"
                   type="text"
-                  {...register("subcommunity", {
-                    required: thereIsSubcommunity,
+                  list="sub_communities_list"
+                  {...register("sub_communities_name", {
+                    required:true,
                   })}
                 />
-                {errors.subcommunity?.type === "required" && (
+                <datalist id="sub_communities_list">
+                  <select>
+                    {naturalParkSubcommunities.map((subcommunities, index) => (
+                      <option key={index}>{subcommunities}</option>
+                    ))}
+                  </select>
+                </datalist>
+              </div>
+  
+                {errors.sub_communities_name?.type === "required" && (
                   <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                     Subcommunity name is required
                   </p>
