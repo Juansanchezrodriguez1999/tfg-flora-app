@@ -285,7 +285,8 @@ export default function Samples() {
   };
 
   const submitSync = async (doc) => {
-    updateState();
+    if(navigator.onLine){
+      updateState();
     let sync;
     if (doc === undefined) sync = FloraSamples.syncAll(session.user.username);
     else sync = FloraSamples.syncOne(doc, session.user.username);
@@ -303,12 +304,23 @@ export default function Samples() {
         updateRemoteTable();
         updateLocalTable();
       });
+      clickUpdate();
+    }
+    else {
+      setOfflineMessage(true);
+      setShowAllSyncButton(false)
+      router.push({
+        pathname: "/samples",
+      });
+
+    }
   };
 
   if (status === "authenticated") {
     return (
-      <div className="mx-auto grid place-items-center">
-        <Header />
+      <>
+      <Header />
+      <div className="mx-auto grid place-items-center grid">
         <div className="max-w-4xl mt-4 mb-2 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
           <div className="grid place-items-center mb-6">
             {routerQuery?.success === "naturalParkAdded" &&
@@ -491,14 +503,15 @@ export default function Samples() {
                   });
               }}
             >
-              <div className="flex items-center justify-center space-x-2 font-bold text-green-500 hover:text-green-800">
+              <div className="flex items-center justify-center w-3/4  font-bold text-green-500 hover:text-green-800">
                 <GrUpdate className /> <span> Update local database</span>
               </div>
             </button>
           )}
         </div>
         <Footer />
-      </div>
+      </div></>
+      
     );
   } else if (status === "loading") {
     return null;
