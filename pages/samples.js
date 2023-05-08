@@ -41,16 +41,14 @@ export default function Samples() {
     setDropLocalSuccess(false);
   };
 
-  const clickUpdate = async () => {
+  const clickUpdate =  async () => {
     if (navigator.onLine) {
-      const lastr = await Functions.updateTimesAfterUpdate();
-      setLastRefresh(lastr);
       let refresh = true;
       await FloraSpecies.getSpecies(refresh);
       await FloraCommunity.getCommunities(refresh);
       await FloraSubcommunity.getSubcommunities(refresh);
-      
       FloraAuthors.getUsers(refresh);
+
     } else {
       setOfflineMessage(true);
     }
@@ -313,6 +311,7 @@ export default function Samples() {
         pathname: "/samples",
       });
 
+
     }
   };
 
@@ -399,7 +398,7 @@ export default function Samples() {
               !routerQuery?.success &&
               setBoxMessage(
                 "Warning",
-                "You have no internet connection,  you can not update local database but you can continue collecting samples and they will be stored in the local database."
+                "You have no internet connection, update local database and samples syncronization is not available but you can continue collecting samples and they will be stored in the local database."
               )}
             {numLocalDocs > 0 &&
               navigator.onLine &&
@@ -488,12 +487,12 @@ export default function Samples() {
             <button
               className=""
               type="button"
-              onClick={async () => {
+              onClick={ () => {
                 clickUpdate()
-                  .then(() => {
-                    router.push({
-                      pathname: "/samples",
-                    });
+                  .then( () => {
+                    const lastr =  Functions.updateTimesAfterUpdate();
+                    setLastRefresh(lastr);
+                    location.reload(false)
                   })
                   .catch((e) => {
                     router.push({
