@@ -41,14 +41,15 @@ export default function Samples() {
     setDropLocalSuccess(false);
   };
 
-  const clickUpdate =  async () => {
+  const clickUpdate = async () => {
     if (navigator.onLine) {
+      const lastr = await Functions.updateTimesAfterUpdate();
+      setLastRefresh(lastr);
       let refresh = true;
       await FloraSpecies.getSpecies(refresh);
       await FloraCommunity.getCommunities(refresh);
       await FloraSubcommunity.getSubcommunities(refresh);
-      FloraAuthors.getUsers(refresh);
-
+      await FloraAuthors.getUsers(refresh);
     } else {
       setOfflineMessage(true);
     }
@@ -471,15 +472,15 @@ export default function Samples() {
           )}
         </div>
 
-        <div className="flex gap-2 mb-2">
+        <div className="max-w-4xl flex text-sm px-8 w-full gap-4 mb-2">
           {lastRefresh !== "undefined" && (
-            <div className="flex items-center justify-center space-x-2 mr-2">
+            <div className="flex items-center justify-center space-x-2 ">
               Local database update: &nbsp;
               {lastRefresh}
             </div>
           )}
           {lastRefresh == "undefined" && (
-            <div className="flex items-center justify-center space-x-2 mr-2">
+            <div className="flex items-center text-sm justify-center space-x-2 ">
               The local database has never been updated
             </div>
           )}
@@ -487,11 +488,9 @@ export default function Samples() {
             <button
               className=""
               type="button"
-              onClick={ () => {
+              onClick={async () => {
                 clickUpdate()
-                  .then( () => {
-                    const lastr =  Functions.updateTimesAfterUpdate();
-                    setLastRefresh(lastr);
+                  .then(() => {
                     location.reload(false)
                   })
                   .catch((e) => {
@@ -502,8 +501,11 @@ export default function Samples() {
                   });
               }}
             >
-              <div className="flex items-center justify-center w-3/4  font-bold text-green-500 hover:text-green-800">
-                <GrUpdate className /> <span> Update local database</span>
+              <div className="flex gap-1 items-center justify-center text-green-500 hover:text-green-800">
+                 <span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+</svg>
+</span>Update local database
               </div>
             </button>
           )}
