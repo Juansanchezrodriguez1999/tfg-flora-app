@@ -1,5 +1,4 @@
 import { useSession, signOut } from "next-auth/react";
-import { VscSignOut } from "react-icons/vsc";
 
 export default function CustomHeader() {
   const { data: session, status } = useSession();
@@ -9,15 +8,14 @@ export default function CustomHeader() {
       <link rel="icon" href="/services/flora/app/favicon.ico" type="image/x-icon" />
       <link rel="shortcut icon" href="/services/flora/app/favicon.ico" type="image/x-icon" />
       <div></div>
-      <button className="grid justify-items-center">
+      <div className="grid justify-items-center">
         <img
-          className="flex items-center inline-block bg-white transition-colors ease-in-out hover:bg-green-100 font-medium rounded-full"
-          onClick={() => location.reload(false)}
+          className="flex items-center inline-block bg-white ease-in-out font-medium "
           src="/services/flora/app/logo.png"
           style={{ height: 70 }}
           alt="Logo"
         />
-      </button>
+      </div>
       <div className="grid justify-items-end items-center">
         {status === "authenticated" && navigator.onLine &&(
           <>
