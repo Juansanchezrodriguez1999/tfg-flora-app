@@ -9,6 +9,8 @@ import Table, {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FloraSamples } from "/lib/FloraSamples";
+import { FloraCommunity } from "../lib/FloraCommunity";
+import { FloraSubcommunity } from "../lib/FloraSubCommunity";
 import { GrAddCircle, GrUpdate } from "react-icons/gr";
 import { Time } from "../lib/Time";
 import { Functions } from "../components/form-components/Functions";
@@ -45,12 +47,13 @@ export default function Samples() {
       setLastRefresh(lastr);
       let refresh = true;
       await FloraSpecies.getSpecies(refresh);
-      FloraAuthors.getUsers(refresh);
+      await FloraCommunity.getCommunities(refresh);
+      await FloraSubcommunity.getSubcommunities(refresh);
+      await FloraAuthors.getUsers(refresh);
     } else {
       setOfflineMessage(true);
     }
   };
-
   const preprocessSamples = (docs) => {
     const res = docs.map((doc) => {
       const date = new Date(doc.created_at);
@@ -281,7 +284,8 @@ export default function Samples() {
   };
 
   const submitSync = async (doc) => {
-    updateState();
+    if(navigator.onLine){
+      updateState();
     let sync;
     if (doc === undefined) sync = FloraSamples.syncAll(session.user.username);
     else sync = FloraSamples.syncOne(doc, session.user.username);
@@ -299,12 +303,24 @@ export default function Samples() {
         updateRemoteTable();
         updateLocalTable();
       });
+      clickUpdate();
+    }
+    else {
+      setOfflineMessage(true);
+      setShowAllSyncButton(false)
+      router.push({
+        pathname: "/samples",
+      });
+
+
+    }
   };
 
   if (status === "authenticated") {
     return (
-      <div className="mx-auto grid place-items-center">
-        <Header />
+      <>
+      <Header />
+      <div className="mx-auto grid place-items-center grid">
         <div className="max-w-4xl mt-4 mb-2 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
           <div className="grid place-items-center mb-6">
             {routerQuery?.success === "naturalParkAdded" &&
@@ -383,7 +399,7 @@ export default function Samples() {
               !routerQuery?.success &&
               setBoxMessage(
                 "Warning",
-                "You have no internet connection,  you can not update local database but you can continue collecting samples and they will be stored in the local database."
+                "You have no internet connection, update local database and samples syncronization is not available but you can continue collecting samples and they will be stored in the local database."
               )}
             {numLocalDocs > 0 &&
               navigator.onLine &&
@@ -456,15 +472,15 @@ export default function Samples() {
           )}
         </div>
 
-        <div className="flex gap-2 mb-2">
+        <div className="max-w-4xl flex text-sm px-8 w-full gap-4 mb-2">
           {lastRefresh !== "undefined" && (
-            <div className="flex items-center justify-center space-x-2 mr-2">
+            <div className="flex items-center justify-center space-x-2 ">
               Local database update: &nbsp;
               {lastRefresh}
             </div>
           )}
           {lastRefresh == "undefined" && (
-            <div className="flex items-center justify-center space-x-2 mr-2">
+            <div className="flex items-center text-sm justify-center space-x-2 ">
               The local database has never been updated
             </div>
           )}
@@ -475,9 +491,7 @@ export default function Samples() {
               onClick={async () => {
                 clickUpdate()
                   .then(() => {
-                    router.push({
-                      pathname: "/samples",
-                    });
+                    location.reload(false)
                   })
                   .catch((e) => {
                     router.push({
@@ -487,14 +501,18 @@ export default function Samples() {
                   });
               }}
             >
-              <div className="flex items-center justify-center space-x-2 font-bold text-green-500 hover:text-green-800">
-                <GrUpdate className /> <span> Update local database</span>
+              <div className="flex gap-1 items-center justify-center text-green-500 hover:text-green-800">
+                 <span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+</svg>
+</span>Update local database
               </div>
             </button>
           )}
         </div>
         <Footer />
-      </div>
+      </div></>
+      
     );
   } else if (status === "loading") {
     return null;

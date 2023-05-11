@@ -3,6 +3,8 @@ import { FloraSamples } from "../../lib/FloraSamples";
 import { FloraAuthors } from "../../lib/FloraAuthors";
 import { FloraSpecies } from "../../lib/FloraSpecies";
 import { Time } from "../../lib/Time";
+import { FloraCommunity } from "../../lib/FloraCommunity";
+import { FloraSubcommunity } from "../../lib/FloraSubCommunity";
 
 const Functions = {
   //No Register and useEffect
@@ -80,6 +82,26 @@ const Functions = {
       setNaturalParkSpecies(unique_np_species);
     } else {
       setNaturalParkSpecies([]);
+    }
+  },
+  getCommunities: async (np, allCommunities, setNaturalParkCommunities) => {
+    if (allCommunities.map((d) => d._id).includes(np)) {
+      const np_doc = allCommunities.find((d) => d._id === np);
+      const np_communities = np_doc.Community.map((s) => s);
+      const unique_np_communities = [...new Set(np_communities)];
+      setNaturalParkCommunities(unique_np_communities);
+    } else {
+      setNaturalParkCommunities([]);
+    }
+  },
+  getSubCommunities: async (np, allSubcommunities, setNaturalParkSubcommunities) => {
+    if (allSubcommunities.map((d) => d._id).includes(np)) {
+      const np_doc = allSubcommunities.find((d) => d._id === np);
+      const np_subcommunities = np_doc.Subcommunity.map((s) => s);
+      const unique_np_subcommunities = [...new Set(np_subcommunities)];
+      setNaturalParkSubcommunities(unique_np_subcommunities);
+    } else {
+      setNaturalParkSubcommunities([]);
     }
   },
   //Georeferencing
@@ -212,6 +234,14 @@ const Functions = {
   getAllSpecies: async (setAllSpecies, refresh) => {
     const registered_species = await FloraSpecies.getSpecies(refresh);
     setAllSpecies(registered_species);
+  },
+  getAllCommunities: async (setAllCommunities, refresh) => {
+    const registered_communities = await FloraCommunity.getCommunities(refresh);
+    setAllCommunities(registered_communities);
+  },
+  getAllSubcommunities: async (setAllSubCommunities, refresh) => {
+    const registered_subcommunities = await FloraSubcommunity.getSubcommunities(refresh);
+    setAllSubCommunities(registered_subcommunities);
   },
   getAuthors: async (setStaticAuthors, setUsernames, refresh) => {
     const registered_authors = await FloraAuthors.getUsers(refresh);

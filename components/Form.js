@@ -32,6 +32,8 @@ export default function Form({ sample, isLocal, refresh }) {
   const [currentAuthor, setCurrentAuthor] = useState();
   const [species, setSpecies] = useState([]);
   const [currentSpecies, setCurrentSpecies] = useState();
+  const [currentCommunityName, setCurrentCommunityName] = useState();
+  const [currentSubCommunityName, setCurrentSubCommunityName] = useState();
   const [currentInd, setCurrentInd] = useState();
   const [authorClick, setAuthorClick] = useState(false);
   const [speciesClick, setSpeciesClick] = useState(false);
@@ -42,14 +44,19 @@ export default function Form({ sample, isLocal, refresh }) {
   const [staticAuthors, setStaticAuthors] = useState([]);
   const [usernames, setUsernames] = useState([]);
   const [allSpecies, setAllSpecies] = useState([]);
+  const [allCommunities, setAllCommunities] = useState([]);
+  const [allSubcommunities, setAllSubcommunities] = useState([]);
   const [naturalParkSpecies, setNaturalParkSpecies] = useState([]);
+  const [naturalParkCommunities, setNaturalParkCommunities] = useState([]);
+  const [naturalParkSubcommunities, setNaturalParkSubcommunities] = useState([]);
   const [thereIsCommunity, setThereIsCommunity] = useState(false);
   const [communityAuthors, setCommunityAuthors] = useState([]);
   const [currentCommunityAuthor, setCurrentCommunityAuthor] = useState();
   const [communityAuthorClick, setCommunityAuthorClick] = useState(false);
   const [localRegisNumbers, setLocalRegisNumbers] = useState([]);
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
-  const uppy = 
+
+  const uppy =
     new Uppy({
       autoProceed: false,
       restrictions: {
@@ -61,6 +68,8 @@ export default function Form({ sample, isLocal, refresh }) {
     Functions.getAuthors(setStaticAuthors, setUsernames, refresh);
     setIsGeolocationAvailable("geolocation" in navigator);
     Functions.getAllSpecies(setAllSpecies, refresh);
+    Functions.getAllCommunities(setAllCommunities, refresh);
+    Functions.getAllSubcommunities(setAllSubcommunities, refresh);
     Functions.getLocalRegisNumbers(setLocalRegisNumbers, isLocal, sample);
     Functions.getRemoteRegisNumbers(setRemoteRegisNumbers);
     if (sample) {
@@ -89,11 +98,11 @@ export default function Form({ sample, isLocal, refresh }) {
       setValue("plotorientation", sample.Plot_Orientation);
       setValue("ecology", sample.Ecology);
       if (sample.Community) setThereIsCommunity(true);
-      setValue("community", sample.Community);
+      setValue("communities_name", sample.Community);
       setValue("community_year", sample.Community_Year);
       setCommunityAuthors(sample.Community_Authors);
       if (sample.Subcommunity) setThereIsSubcommunity(true);
-      setValue("subcommunity", sample.Subcommunity);
+      setValue("sub_communities_name", sample.Subcommunity);
       setValue("subcommunity_year", sample.Subcommunity_Year);
       setSubcommunityAuthors(sample.Subcommunity_Authors);
       setSpecies(sample.Species);
@@ -135,10 +144,10 @@ export default function Form({ sample, isLocal, refresh }) {
           mode === "latlon"
             ? [latitude, longitude]
             : Functions.getCoordinatesFromUTM(data.utm);
-        const final_c_name = thereIsCommunity ? data.community : "";
+        const final_c_name = thereIsCommunity ? data.communities_name : "";
         const final_c_authors = thereIsCommunity ? communityAuthors : [];
         const final_c_year = thereIsCommunity ? data.community_year : "";
-        const final_subc_name = thereIsSubcommunity ? data.subcommunity : "";
+        const final_subc_name = thereIsSubcommunity ? data.sub_communities_name : "";
         const final_subc_authors = thereIsSubcommunity
           ? subcommunityAuthors
           : [];
@@ -220,10 +229,24 @@ export default function Form({ sample, isLocal, refresh }) {
           className="max-w-4xl mt-4 mb-4 bg-white shadow-md rounded px-8 pt-6 pb-8 w-full"
           onSubmit={handleSubmit(submitForm)}
         >
-          <div className="mb-4">
-            <label className="block text-green-500 text-lg font-bold mb-4">
+
+          <div className="mb-4 grid grid-cols-2 ">
+            <label className="flex block text-green-500 text-lg font-bold ">
               Identification
+
             </label>
+            
+            <div className="grid mx-auto font-medium grid place-items-end">
+              <Link href="/samples" className="bg-green-400">
+                <a className="flex gap-1 items-center w-1/4 justify-items-end text-green-500 hover:text-green-800">
+                  <span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                  </svg>
+                  </span>Return
+                </a>
+              </Link>
+            </div>
+
           </div>
           <div className="mb-4">
             {!navigator.onLine && (
@@ -439,13 +462,23 @@ export default function Form({ sample, isLocal, refresh }) {
               id="natural_park"
               defaultValue=""
               {...register("natural_park")}
-              onChange={(e) =>
+              onChange={(e) => {
                 Functions.getSpecies(
                   e.target.value,
                   allSpecies,
                   setNaturalParkSpecies
-                )
-              }
+                ),
+                  Functions.getCommunities(
+                    e.target.value,
+                    allCommunities,
+                    setNaturalParkCommunities
+                  ),
+                  Functions.getSubCommunities(
+                    e.target.value,
+                    allSubcommunities,
+                    setNaturalParkSubcommunities
+                  )
+              }}
             >
               <option value="" disabled hidden />
               {allSpecies.map((np_doc, index) => (
@@ -654,10 +687,10 @@ export default function Form({ sample, isLocal, refresh }) {
             />
             {(errors.coverage?.type === "min" ||
               errors.coverage?.type === "max") && (
-              <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                Coverage must be in the range (0, 100)
-              </p>
-            )}
+                <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                  Coverage must be in the range (0, 100)
+                </p>
+              )}
           </div>
           <div className="mb-4">
             <label
@@ -695,10 +728,10 @@ export default function Form({ sample, isLocal, refresh }) {
             />
             {(errors.plotslope?.type === "min" ||
               errors.plotslope?.type === "max") && (
-              <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                Plot Slope must be in the range (0, 180)
-              </p>
-            )}
+                <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                  Plot Slope must be in the range (0, 180)
+                </p>
+              )}
           </div>
           <div className="mb-4">
             <label
@@ -846,13 +879,26 @@ export default function Form({ sample, isLocal, refresh }) {
                 >
                   Community name <span className="text-red-700">*</span>
                 </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="community"
-                  type="text"
-                  {...register("community", { required: thereIsCommunity })}
-                />
-                {errors.community?.type === "required" && (
+                <div>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="communities_name"
+                    type="text"
+                    list="communities_list"
+                    {...register("communities_name", {
+                      required: true,
+                    })}
+
+                  />
+                  <datalist id="communities_list">
+                    <select>
+                      {naturalParkCommunities.map((communities, index) => (
+                        <option key={index}>{communities}</option>
+                      ))}
+                    </select>
+                  </datalist>
+                </div>
+                {errors.communities_name?.type === "required" && (
                   <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                     Community name is required
                   </p>
@@ -877,10 +923,10 @@ export default function Form({ sample, isLocal, refresh }) {
                 />
                 {(errors.community_year?.type === "max" ||
                   errors.community_year?.type === "min") && (
-                  <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                    The year entered is invalid
-                  </p>
-                )}
+                    <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                      The year entered is invalid
+                    </p>
+                  )}
               </div>
               <div className="mb-4">
                 <label
@@ -1034,15 +1080,26 @@ export default function Form({ sample, isLocal, refresh }) {
                 >
                   Sub-community name <span className="text-red-700">*</span>
                 </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="subcommunity"
-                  type="text"
-                  {...register("subcommunity", {
-                    required: thereIsSubcommunity,
-                  })}
-                />
-                {errors.subcommunity?.type === "required" && (
+                <div>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="sub_communities_name"
+                    type="text"
+                    list="sub_communities_list"
+                    {...register("sub_communities_name", {
+                      required: true,
+                    })}
+                  />
+                  <datalist id="sub_communities_list">
+                    <select>
+                      {naturalParkSubcommunities.map((subcommunities, index) => (
+                        <option key={index}>{subcommunities}</option>
+                      ))}
+                    </select>
+                  </datalist>
+                </div>
+
+                {errors.sub_communities_name?.type === "required" && (
                   <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                     Subcommunity name is required
                   </p>
@@ -1067,10 +1124,10 @@ export default function Form({ sample, isLocal, refresh }) {
                 />
                 {(errors.subcommunity_year?.type === "max" ||
                   errors.subcommunity_year?.type === "min") && (
-                  <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
-                    The year entered is invalid
-                  </p>
-                )}
+                    <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
+                      The year entered is invalid
+                    </p>
+                  )}
               </div>
               <div className="mb-4">
                 <label
@@ -1324,7 +1381,7 @@ export default function Form({ sample, isLocal, refresh }) {
             </label>
           </div>
           {!navigator.onLine &&
-            <div className="text-gray-700 text-sm font-medium font-bold bg-red-200 rounded-lg p-2 mb-4 grid place-items-center">        
+            <div className="text-gray-700 text-sm font-medium font-bold bg-red-200 rounded-lg p-2 mb-4 grid place-items-center">
               No connection, uploading images from the camera does not work
             </div>
           }
@@ -1336,25 +1393,23 @@ export default function Form({ sample, isLocal, refresh }) {
                 hideUploadButton={true}
                 height={300}
                 width="100vw"
-                
+
               />
             </div>
           </div>
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-green-200 transition-colors ease-in-out hover:bg-green-400 py-2 px-2 rounded"
+          <div className="grid grid-cols-1 mx-auto font-medium grid place-items-rignt">
+
+
+            <div className="grid justify-items-center w-13 h-7"><button
+
               type="submit"
             >
-              <div className="flex items-center justify-center space-x-2">
+              <div className=" flex items-center space-x-1 inline-block ease-in-out bg-green-200 hover:bg-green-400  px-2 py-2 rounded">
                 <BiSend />
                 <span>Send</span>
               </div>
-            </button>
-            <Link href="/samples">
-              <a className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800">
-                Back to sample list
-              </a>
-            </Link>
+            </button></div>
+
           </div>
         </form>
       </>
