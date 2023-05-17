@@ -75,12 +75,15 @@ const Functions = {
   },
   //Natural Park
   getSpecies: async (np, allSpecies, setNaturalParkSpecies) => {
+    console.log(np)
+    console.log(allSpecies)
     if (allSpecies.map((d) => d._id).includes(np)) {
       const np_doc = allSpecies.find((d) => d._id === np);
       const np_species = np_doc.Species.map((s) => s);
       const unique_np_species = [...new Set(np_species)];
       setNaturalParkSpecies(unique_np_species);
     } else {
+
       setNaturalParkSpecies([]);
     }
   },

@@ -14,6 +14,8 @@ import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import { Functions } from "./form-components/Functions";
 
+
+
 export default function Form({ sample, isLocal, refresh }) {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -44,6 +46,7 @@ export default function Form({ sample, isLocal, refresh }) {
   const [staticAuthors, setStaticAuthors] = useState([]);
   const [usernames, setUsernames] = useState([]);
   const [allSpecies, setAllSpecies] = useState([]);
+  const [filteredSpecies, setFilteredSpecies] = useState([]);
   const [allCommunities, setAllCommunities] = useState([]);
   const [allSubcommunities, setAllSubcommunities] = useState([]);
   const [naturalParkSpecies, setNaturalParkSpecies] = useState([]);
@@ -56,13 +59,14 @@ export default function Form({ sample, isLocal, refresh }) {
   const [localRegisNumbers, setLocalRegisNumbers] = useState([]);
   const [remoteRegisNumbers, setRemoteRegisNumbers] = useState([]);
 
-  const uppy =
-    new Uppy({
+  const uppy = useUppy(() => {
+    return new Uppy({
       autoProceed: false,
       restrictions: {
         allowedFileTypes: ["image/*"],
       },
     });
+  });
 
   useEffect(() => {
     Functions.getAuthors(setStaticAuthors, setUsernames, refresh);
@@ -86,7 +90,6 @@ export default function Form({ sample, isLocal, refresh }) {
       setValue("group", sample.Group);
       setValue("project", sample.Project);
       setValue("location", sample.Location);
-      setValue("natural_park", sample.Natural_Park);
       setUTM(UTM_split);
       setValue("utm", UTM_split);
       setValue("lithology", sample.Lithology);
@@ -221,6 +224,41 @@ export default function Form({ sample, isLocal, refresh }) {
     if (status === "authenticated" && !sample)
       setAuthors([...authors, session.user.username]);
   }, [status]);
+
+  useEffect(() => {
+    if (sample && allSpecies){
+      setFilteredSpecies(allSpecies.filter(item => item._id !== sample.Natural_Park))
+      Functions.getSpecies(
+        sample.Natural_Park,
+        allSpecies,
+        setNaturalParkSpecies
+      );
+    }
+  
+  }, [allSpecies]);
+  useEffect(() => {
+    if (sample && allCommunities){
+      Functions.getCommunities(
+      sample.Natural_Park,
+      allCommunities,
+      setNaturalParkCommunities
+    );
+    }
+    
+  }, [allCommunities]);
+  useEffect(() => {
+    if (sample && allSubcommunities){
+      Functions.getSubCommunities(
+      sample.Natural_Park,
+      allSubcommunities,
+      setNaturalParkSubcommunities
+    );
+    }
+    
+  }, [allSubcommunities]);
+
+
+
   if (status === "authenticated") {
     return (
       <>
@@ -233,9 +271,7 @@ export default function Form({ sample, isLocal, refresh }) {
           <div className="mb-4 grid grid-cols-2 ">
             <label className="flex block text-green-500 text-lg font-bold ">
               Identification
-
-            </label>
-            
+            </label>            
             <div className="grid mx-auto font-medium grid place-items-end">
               <Link href="/samples" className="bg-green-400">
                 <a className="flex gap-1 items-center w-1/4 justify-items-end text-green-500 hover:text-green-800">
@@ -246,7 +282,6 @@ export default function Form({ sample, isLocal, refresh }) {
                 </a>
               </Link>
             </div>
-
           </div>
           <div className="mb-4">
             {!navigator.onLine && (
@@ -480,10 +515,24 @@ export default function Form({ sample, isLocal, refresh }) {
                   )
               }}
             >
+              {sample?(
+                <>
+                    <option key={sample.Natural_Park} >{sample.Natural_Park}</option>
+
+                    {filteredSpecies.map((np_doc, index) => (
+                    
+                    <option key={index}>{np_doc._id}</option>
+                      ))}
+              </>
+              ):
+              <>
               <option value="" disabled hidden />
               {allSpecies.map((np_doc, index) => (
                 <option key={index}>{np_doc._id}</option>
               ))}
+              
+              </>
+            }              
             </select>
           </div>
 
@@ -1387,13 +1436,12 @@ export default function Form({ sample, isLocal, refresh }) {
           }
           <div className="mb-4">
             <div className="grid justify-center">
-              <Dashboard
+  <Dashboard
                 className="max-w-4xl"
                 uppy={uppy}
                 hideUploadButton={true}
                 height={300}
                 width="100vw"
-
               />
             </div>
           </div>
