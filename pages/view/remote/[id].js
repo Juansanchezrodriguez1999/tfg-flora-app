@@ -17,7 +17,7 @@ const View = ({ sample }) => {
         <Header />
         <Details sample={sample} isLocal={false} />
         <Link href="/samples">
-          <a className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800 my-4">
+          <a className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800 mb-3">
             Back to sample list
           </a>
         </Link>
