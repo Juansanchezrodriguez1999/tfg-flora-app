@@ -321,7 +321,7 @@ export default function Samples() {
       <>
         <Header />
         <div className="mx-auto grid place-items-center grid">
-          <div className="max-w-4xl mt-4 mb-2 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
+          <div className="max-w-4xl mt-4 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
             <div className="grid place-items-center mb-6">
               {routerQuery?.success === "naturalParkAdded" &&
                 setBoxMessage(
