@@ -284,25 +284,25 @@ export default function Samples() {
   };
 
   const submitSync = async (doc) => {
-    if(navigator.onLine){
+    if (navigator.onLine) {
       updateState();
-    let sync;
-    if (doc === undefined) sync = FloraSamples.syncAll(session.user.username);
-    else sync = FloraSamples.syncOne(doc, session.user.username);
+      let sync;
+      if (doc === undefined) sync = FloraSamples.syncAll(session.user.username);
+      else sync = FloraSamples.syncOne(doc, session.user.username);
 
-    sync
-      .then(() => {
-        setSyncSuccess(true);
-        setSyncError();
-      })
-      .catch((e) => {
-        setSyncError(e.message);
-        setSyncSuccess(false);
-      })
-      .then(() => {
-        updateRemoteTable();
-        updateLocalTable();
-      });
+      sync
+        .then(() => {
+          setSyncSuccess(true);
+          setSyncError();
+        })
+        .catch((e) => {
+          setSyncError(e.message);
+          setSyncSuccess(false);
+        })
+        .then(() => {
+          updateRemoteTable();
+          updateLocalTable();
+        });
       clickUpdate();
     }
     else {
@@ -319,200 +319,204 @@ export default function Samples() {
   if (status === "authenticated") {
     return (
       <>
-      <Header />
-      <div className="mx-auto grid place-items-center grid">
-        <div className="max-w-4xl mt-4 mb-2 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
-          <div className="grid place-items-center mb-6">
-            {routerQuery?.success === "naturalParkAdded" &&
-              setBoxMessage(
-                "Success",
-                "The Natural Site has been correctly stored in the local repository."
-              )}
-            {routerQuery?.success === "true" &&
-              setBoxMessage(
-                "Success",
-                "The sample has been correctly stored in the remote repository."
-              )}
-            {routerQuery?.success === "false" &&
-              routerQuery?.code === "EDI" &&
-              setBoxMessage(
-                "Error",
-                "Error during insertion in the local database, try again."
-              )}
-            {routerQuery?.success === "false" &&
-              routerQuery?.code === "EDU" &&
-              setBoxMessage(
-                "Error",
-                "Error during update in the local database, try again."
-              )}
-            {routerQuery?.success === "false" && routerQuery?.code === "LOC" && (
-              <div>
-                {" "}
-                {setBoxMessage(
-                  "Warning",
-                  "The collected data is currently in a local database due to its lack of connection."
-                )}{" "}
-                {setBoxMessage(
-                  "Message",
-                  `You can continue collecting samples offline without any problem. Total local samples: ${numLocalDocs}.`
-                )}{" "}
-              </div>
-            )}
-            {routerQuery?.success === "false" &&
-              routerQuery?.code === "EDS" &&
-              setBoxMessage(
-                "Warning",
-                "The collected data is currently in a local database due to an error during synchronization between it and the remote one."
-              )}
-            {syncError && (
-              <div>
-                {" "}
-                {setBoxMessage("Error", `${syncError}`)}{" "}
-                {setBoxMessage(
-                  "Message",
-                  "Don't worry, your data is still stored in the local database."
-                )}{" "}
-              </div>
-            )}
-            {syncSuccess &&
-              setBoxMessage(
-                "Success",
-                "Data has been correctly synchronized with the remote database."
-              )}
-            {dropRemoteSuccess &&
-              setBoxMessage(
-                "Success",
-                "The sample has been successfully removed from the remote database."
-              )}
-            {dropLocalSuccess &&
-              setBoxMessage(
-                "Success",
-                "The sample has been successfully removed from the local database."
-              )}
-            {(syncSuccess || dropLocalSuccess) &&
-              numLocalDocs == 0 &&
-              setBoxMessage(
-                "Message",
-                "No sample pending, so the local database has been cleaned up."
-              )}
-            {offlineMessage &&
-              !routerQuery?.success &&
-              setBoxMessage(
-                "Warning",
-                "You have no internet connection, update local database and samples syncronization is not available but you can continue collecting samples and they will be stored in the local database."
-              )}
-            {numLocalDocs > 0 &&
-              navigator.onLine &&
-              !syncError &&
-              (!routerQuery?.code || routerQuery?.code !== "EDS") &&
-              setBoxMessage(
-                "Warning",
-                `You have ${numLocalDocs} samples pending to be synchronized.`
-              )}
-
-            <div className="flex gap-2">
-              <Link href="/form">
-                <a className="bg-green-200 transition-colors ease-in-out hover:bg-green-400 py-2 px-2 rounded">
-                  <div className="flex items-center justify-center space-x-2">
-                    <GrAddCircle />
-                    <span>Add sample</span>
-                  </div>
-                </a>
-              </Link>
-              <Link href="/form_np">
-                <a className="bg-pink-200 transition-colors ease-in-out hover:bg-pink-400 py-2 px-2 rounded">
-                  <div className="flex items-center justify-center space-x-2">
-                    <GrAddCircle />
-                    <span>Add Natural Site</span>
-                  </div>
-                </a>
-              </Link>
-            </div>
-          </div>
-          {localSamples.length > 0 && (
-            <div>
-              <div className="mb-4">
-                <label className="block text-green-500 text-lg font-bold mb-4">
-                  Local samples
-                </label>
-              </div>
-              {showAllSyncButton && (
-                <div className="grid place-items-center mb-2">
-                  <button
-                    className="bg-purple-200 transition-colors ease-in-out hover:bg-purple-400 py-2 px-2 rounded mb-5"
-                    onClick={() => submitSync()}
-                  >
-                    <div className="flex items-center justify-center space-x-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="18"
-                        height="18"
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z" />
-                      </svg>
-                      <span>Sync All</span>
-                    </div>
-                  </button>
+        <Header />
+        <div className="mx-auto grid place-items-center grid">
+          <div className="max-w-4xl mt-4 mb-2 bg-green shadow-md rounded px-8 pt-6 pb-8 w-full overflow-x-auto ">
+            <div className="grid place-items-center mb-6">
+              {routerQuery?.success === "naturalParkAdded" &&
+                setBoxMessage(
+                  "Success",
+                  "The Natural Site has been correctly stored in the local repository."
+                )}
+              {routerQuery?.success === "true" &&
+                setBoxMessage(
+                  "Success",
+                  "The sample has been correctly stored in the remote repository."
+                )}
+              {routerQuery?.success === "false" &&
+                routerQuery?.code === "EDI" &&
+                setBoxMessage(
+                  "Error",
+                  "Error during insertion in the local database, try again."
+                )}
+              {routerQuery?.success === "false" &&
+                routerQuery?.code === "EDU" &&
+                setBoxMessage(
+                  "Error",
+                  "Error during update in the local database, try again."
+                )}
+              {routerQuery?.success === "false" && routerQuery?.code === "LOC" && (
+                <div>
+                  {" "}
+                  {setBoxMessage(
+                    "Warning",
+                    "The collected data is currently in a local database due to its lack of connection."
+                  )}{" "}
+                  {setBoxMessage(
+                    "Message",
+                    `You can continue collecting samples offline without any problem. Total local samples: ${numLocalDocs}.`
+                  )}{" "}
                 </div>
               )}
-              <Table columns={columns} data={preprocessSamples(localSamples)} />
-            </div>
-          )}
-          {navigator.onLine && samples.length > 0 && (
-            <div>
-              <div className="mb-4">
-                <label className="block text-green-500 text-lg font-bold mb-4">
-                  Remote samples
-                </label>
-              </div>
-              <Table columns={columns} data={preprocessSamples(samples)} />
-            </div>
-          )}
-        </div>
+              {routerQuery?.success === "false" &&
+                routerQuery?.code === "EDS" &&
+                setBoxMessage(
+                  "Warning",
+                  "The collected data is currently in a local database due to an error during synchronization between it and the remote one."
+                )}
+              {syncError && (
+                <div>
+                  {" "}
+                  {setBoxMessage("Error", `${syncError}`)}{" "}
+                  {setBoxMessage(
+                    "Message",
+                    "Don't worry, your data is still stored in the local database."
+                  )}{" "}
+                </div>
+              )}
+              {syncSuccess &&
+                setBoxMessage(
+                  "Success",
+                  "Data has been correctly synchronized with the remote database."
+                )}
+              {dropRemoteSuccess &&
+                setBoxMessage(
+                  "Success",
+                  "The sample has been successfully removed from the remote database."
+                )}
+              {dropLocalSuccess &&
+                setBoxMessage(
+                  "Success",
+                  "The sample has been successfully removed from the local database."
+                )}
+              {(syncSuccess || dropLocalSuccess) &&
+                numLocalDocs == 0 &&
+                setBoxMessage(
+                  "Message",
+                  "No sample pending, so the local database has been cleaned up."
+                )}
+              {offlineMessage &&
+                !routerQuery?.success &&
+                setBoxMessage(
+                  "Warning",
+                  "You have no internet connection, update local database and samples syncronization is not available but you can continue collecting samples and they will be stored in the local database."
+                )}
+              {numLocalDocs > 0 &&
+                navigator.onLine &&
+                !syncError &&
+                (!routerQuery?.code || routerQuery?.code !== "EDS") &&
+                setBoxMessage(
+                  "Warning",
+                  `You have ${numLocalDocs} samples pending to be synchronized.`
+                )}
 
-        <div className="max-w-4xl flex text-sm px-8 w-full gap-4 mb-2">
-          {lastRefresh !== "undefined" && (
-            <div className="flex items-center justify-center space-x-2 ">
-              Local database update: &nbsp;
-              {lastRefresh}
-            </div>
-          )}
-          {lastRefresh == "undefined" && (
-            <div className="flex items-center text-sm justify-center space-x-2 ">
-              The local database has never been updated
-            </div>
-          )}
-          {navigator.onLine && (
-            <button
-              className=""
-              type="button"
-              onClick={async () => {
-                clickUpdate()
-                  .then(() => {
-                    location.reload(false)
-                  })
-                  .catch((e) => {
-                    router.push({
-                      pathname: "/samples",
-                      query: { success: false, code: e.message },
-                    });
-                  });
-              }}
-            >
-              <div className="flex gap-1 items-center justify-center text-green-500 hover:text-green-800">
-                 <span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-</svg>
-</span>Update local database
+              <div className="flex gap-2">
+                <Link href="/form">
+                  <a className="bg-green-200 transition-colors ease-in-out hover:bg-green-400 py-2 px-2 rounded">
+                    <div className="flex items-center justify-center space-x-2">
+                      <GrAddCircle />
+                      <span>Add sample</span>
+                    </div>
+                  </a>
+                </Link>
+                <Link href="/form_np">
+                  <a className="bg-pink-200 transition-colors ease-in-out hover:bg-pink-400 py-2 px-2 rounded">
+                    <div className="flex items-center justify-center space-x-2">
+                      <GrAddCircle />
+                      <span>Add Natural Site</span>
+                    </div>
+                  </a>
+                </Link>
               </div>
-            </button>
-          )}
-        </div>
-        <Footer />
-      </div></>
-      
+            </div>
+            {localSamples.length > 0 && (
+              <div>
+                <div className="mb-4">
+                  <label className="block text-green-500 text-lg font-bold mb-4">
+                    Local samples
+                  </label>
+                </div>
+                {showAllSyncButton && (
+                  <div className="grid place-items-center mb-2">
+                    <button
+                      className="bg-purple-200 transition-colors ease-in-out hover:bg-purple-400 py-2 px-2 rounded mb-5"
+                      onClick={() => submitSync()}
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                        >
+                          <path fill="none" d="M0 0h24v24H0z" />
+                          <path d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z" />
+                        </svg>
+                        <span>Sync All</span>
+                      </div>
+                    </button>
+                  </div>
+                )}
+                <Table columns={columns} data={preprocessSamples(localSamples)} />
+              </div>
+            )}
+            {navigator.onLine && samples.length > 0 && (
+              <div>
+                <div className="mb-4">
+                  <label className="block text-green-500 text-lg font-bold mb-4">
+                    Remote samples
+                  </label>
+                </div>
+                <Table columns={columns} data={preprocessSamples(samples)} />
+              </div>
+            )}
+          </div>
+
+          <div className="max-w-4xl gap-2 items-center justify-center m-1 place-items-center flex text-sm px-8 w-full">
+              {lastRefresh !== "undefined" && (
+                <>
+                  Local database update: &nbsp; {lastRefresh}
+                </>
+
+
+              )}
+              {lastRefresh == "undefined" && (
+                <>              
+                  The local database has never been updated
+                </>
+              )}
+              {navigator.onLine && (
+                <button
+                className="flex gap-1 items-center text-green-500 hover:text-green-800"
+                  type="button"
+                  onClick={async () => {
+                    clickUpdate()
+                      .then(() => {
+                        location.reload(false)
+                      })
+                      .catch((e) => {
+                        router.push({
+                          pathname: "/samples",
+                          query: { success: false, code: e.message },
+                        });
+                      });
+                  }}
+                >
+ 
+                    <span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    </span> 
+                  Update local database
+                </button>
+              )}
+
+
+
+          </div>
+          <Footer />
+        </div></>
+
     );
   } else if (status === "loading") {
     return null;
