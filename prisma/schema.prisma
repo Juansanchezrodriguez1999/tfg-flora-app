@@ -3,13 +3,11 @@ generator client {
   output          = "../node_modules/@~internal/prisma"
   previewFeatures = ["referentialIntegrity"]
 }
-
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
-
 model User {
   id         Int                    @id @default(autoincrement())
   createdAt  DateTime               @default(now())
@@ -21,7 +19,6 @@ model User {
   belongsTo  UsersOnResearchGroup[]
   isDisabled Boolean                @default(false)
 }
-
 model UsersOnResearchGroup {
   user            User          @relation(fields: [userId], references: [id])
   userId          Int
@@ -30,21 +27,17 @@ model UsersOnResearchGroup {
   assignedAt      DateTime      @default(now())
   assignedBy      String
   status          Status        @default(GUEST)
-
   @@id([userId, researchGroupId])
 }
-
 model ResearchGroup {
   id    Int                    @id @default(autoincrement())
   name  String                 @unique
   users UsersOnResearchGroup[]
 }
-
 enum Role {
   USER
   ADMIN
 }
-
 enum Status {
   RESEARCHER
   PRINCIPAL

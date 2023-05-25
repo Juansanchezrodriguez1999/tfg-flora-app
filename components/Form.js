@@ -170,7 +170,7 @@ export default function Form({ sample, isLocal, refresh }) {
           Group: data.group,
           Project: data.project,
           Location: data.location,
-          Natural_Park: data.natural_park,
+          Natural_Site: data.natural_site,
           UTM: final_utm.replace(/\s+/g, ""),
           Latitude: final_latlon[0],
           Longitude: final_latlon[1],
@@ -227,9 +227,9 @@ export default function Form({ sample, isLocal, refresh }) {
 
   useEffect(() => {
     if (sample && allSpecies){
-      setFilteredSpecies(allSpecies.filter(item => item._id !== sample.Natural_Park))
+      setFilteredSpecies(allSpecies.filter(item => item._id !== sample.Natural_Site))
       Functions.getSpecies(
-        sample.Natural_Park,
+        sample.Natural_Site,
         allSpecies,
         setNaturalParkSpecies
       );
@@ -239,7 +239,7 @@ export default function Form({ sample, isLocal, refresh }) {
   useEffect(() => {
     if (sample && allCommunities){
       Functions.getCommunities(
-      sample.Natural_Park,
+      sample.Natural_Site,
       allCommunities,
       setNaturalParkCommunities
     );
@@ -249,7 +249,7 @@ export default function Form({ sample, isLocal, refresh }) {
   useEffect(() => {
     if (sample && allSubcommunities){
       Functions.getSubCommunities(
-      sample.Natural_Park,
+      sample.Natural_Site,
       allSubcommunities,
       setNaturalParkSubcommunities
     );
@@ -488,15 +488,15 @@ export default function Form({ sample, isLocal, refresh }) {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="natural_park"
+              htmlFor="natural_site"
             >
               Natural site
             </label>
             <select
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="natural_park"
+              id="natural_site"
               defaultValue=""
-              {...register("natural_park")}
+              {...register("natural_site")}
               onChange={(e) => {
                 Functions.getSpecies(
                   e.target.value,
@@ -517,7 +517,7 @@ export default function Form({ sample, isLocal, refresh }) {
             >
               {sample?(
                 <>
-                    <option key={sample.Natural_Park} >{sample.Natural_Park}</option>
+                    <option key={sample.Natural_Site} >{sample.Natural_Site}</option>
 
                     {filteredSpecies.map((np_doc, index) => (
                     
