@@ -25,7 +25,7 @@ export default function Form({ sample, isLocal, refresh }) {
   }, [refresh]);
 
   const submitForm = async (data) => {
-    await FloraSpecies.insertLocalOne(data.natural_park)
+    await FloraSpecies.insertLocalOne(data.natural_site)
       .then(() => {
         router.push({
           pathname: "/samples",
@@ -61,16 +61,16 @@ export default function Form({ sample, isLocal, refresh }) {
             )}
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="natural_park"
+              htmlFor="natural_site"
             >
               Natural Site
               <span className="text-red-700">*</span>
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="natural_park"
+              id="natural_site"
               type="text"
-              {...register("natural_park", {
+              {...register("natural_site", {
                 required: true,
                 validate: {
                   local: (value) =>
@@ -80,13 +80,13 @@ export default function Form({ sample, isLocal, refresh }) {
                 },
               })}
             />
-            {errors.natural_park?.type === "local" && (
+            {errors.natural_site?.type === "local" && (
               <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                 Natural Site is already associated with another natural site in
                 the local database
               </p>
             )}
-            {errors.natural_park?.type === "remote" && (
+            {errors.natural_site?.type === "remote" && (
               <p className="mt-2 block text-gray-700 text-sm font-bold mb-2 pl-2 pr-2 bg-red-200 rounded">
                 Natural Site is already associated with another natural site in
                 the remote database
