@@ -24,5 +24,7 @@ module.exports = withPWA({
     MINIO_ACCESS_KEY: process.env.MINIO_ACCESS_KEY,
     MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY,
     MONGO_URI: process.env.MONGO_URI,
+    MONGO_DATABASE: process.env.MONGO_DATABASE,
+    MONGO_COLLECTION: process.env.MONGO_COLLECTION
   },
 });

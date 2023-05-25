@@ -17,7 +17,7 @@ const View = ({ sample }) => {
         <Header />
         <Details sample={sample} isLocal={false} />
         <Link href="/samples">
-          <a className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800 my-4">
+          <a className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800 mb-3">
             Back to sample list
           </a>
         </Link>
@@ -35,9 +35,7 @@ const View = ({ sample }) => {
 export async function getServerSideProps(ctx) {
   const { id } = ctx.query;
   const sample = await FloraSamplesHandler.getOne(id);
-  sample._id = sample._id.toString();
-  sample.created_at = sample.created_at.toString();
-
+  delete sample['created_at'];
   const session = await getSession(ctx);
   if (!sample || !sample.Authors.includes(session.user.username)) {
     return {
